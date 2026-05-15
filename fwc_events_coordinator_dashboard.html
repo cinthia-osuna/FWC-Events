@@ -1,566 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FWC Events 2026 — Coordinator Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal-dark:   #0a2e2a;
+    --teal-mid:    #0e3832;
+    --teal-border: rgba(255,255,255,0.10);
+    --cream:       #f5f2eb;
+    --cream-dim:   rgba(245,242,235,0.68);
+    --cream-dimmer:rgba(245,242,235,0.40);
 
-body, .wrap { font-family: 'DM Sans', sans-serif; color: var(--color-text-primary); }
+    --bg-panel:      #ffffff;
+    --bg-panel-2:    #f4f2ee;
+    --text-panel:    #1a1a18;
+    --text-panel-2:  #6b6a65;
+    --text-panel-3:  #a09f9a;
+    --border-panel:  rgba(0,0,0,0.09);
+    --border-panel-med: rgba(0,0,0,0.17);
 
-.wrap { padding: 1.5rem 0; }
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 18px;
 
-h1.title {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  margin-bottom: 2px;
-}
+    --green-fill:#EAF3DE; --green-text:#3B6D11; --green-accent:#639922;
+    --amber-fill:#FAEEDA; --amber-text:#854F0B;
+    --red-fill:  #FCEBEB; --red-text:  #A32D2D;
+    --blue-fill: #E6F1FB; --blue-text: #185FA5;
+    --purple-fill:#EEEDFE;--purple-text:#534AB7;
+    --pink-fill: #FBEAF0; --pink-text: #993556;
+    --teal-fill: #E1F5EE; --teal-text: #0F6E56;
+    --coral-fill:#FAECE7; --coral-text:#993C1D;
+    --gray-fill: #F1EFE8; --gray-text: #5F5E5A;
+  }
 
-.subtitle {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  margin-bottom: 1.5rem;
-  font-weight: 300;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--teal-dark);
+    color: var(--cream);
+    min-height: 100vh;
+  }
 
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 1.5rem;
-  border-bottom: 0.5px solid var(--color-border-tertiary);
-  padding-bottom: 0;
-}
+  /* HEADER */
+  .header {
+    background: var(--teal-mid);
+    border-bottom: 1px solid var(--teal-border);
+    padding: 2rem 2rem 1.75rem;
+  }
+  .header-inner { max-width: 960px; margin: 0 auto; }
 
-.tab {
-  font-size: 13px;
-  font-weight: 500;
-  padding: 7px 14px;
-  border: none;
-  background: transparent;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -0.5px;
-  font-family: 'DM Sans', sans-serif;
-  border-radius: 0;
-  transition: color 0.15s;
-}
-.tab.active {
-  color: var(--color-text-primary);
-  border-bottom: 2px solid var(--color-text-primary);
-}
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 600;
+    color: var(--cream); letter-spacing: -0.3px; margin-bottom: 4px;
+  }
+  .subtitle { font-size: 14px; color: var(--cream-dim); font-weight: 300; margin-bottom: 1.5rem; }
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 1.5rem;
-}
+  /* STAT CARDS */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.75rem;
+  }
+  @media(max-width:600px){
+    .summary-grid{grid-template-columns:repeat(2,1fr);}
+    .col-cat,.col-recruit,.col-notes{display:none;}
+    .col-supply{width:100px;}
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--teal-border);
+    border-radius: var(--radius-lg); padding: 14px 16px;
+  }
+  .stat-label {
+    font-size: 10px; color: var(--cream-dimmer); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px;
+  }
+  .stat-val {
+    font-size: 28px; font-weight: 600;
+    font-family: 'Playfair Display', serif; color: var(--cream); line-height: 1;
+  }
+  .stat-sub { font-size: 11px; color: var(--cream-dim); margin-top: 3px; }
 
-.stat-card {
-  background: var(--color-background-secondary);
-  border-radius: var(--border-radius-md);
-  padding: 14px 16px;
-}
+  /* TAB BUTTONS — pill style, very noticeable */
+  .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
 
-.stat-label {
-  font-size: 11px;
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
+  .tab {
+    font-size: 13px; font-weight: 500;
+    padding: 11px 24px;
+    border: 2px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.07);
+    color: var(--cream-dim);
+    cursor: pointer; border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .tab i { font-size: 16px; }
+  .tab:hover {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.50);
+    color: var(--cream);
+    transform: translateY(-1px);
+  }
+  .tab.active {
+    background: var(--cream);
+    border-color: var(--cream);
+    color: var(--teal-dark);
+    font-weight: 600;
+  }
 
-.stat-val {
-  font-size: 26px;
-  font-weight: 500;
-  font-family: 'Playfair Display', serif;
-  line-height: 1;
-}
+  /* MAIN CONTENT */
+  .main { max-width: 960px; margin: 0 auto; padding: 1.75rem 2rem 3rem; }
 
-.stat-sub {
-  font-size: 11px;
-  color: var(--color-text-secondary);
-  margin-top: 2px;
-}
+  /* SAVE BAR */
+  .save-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.07); border: 1px solid var(--teal-border);
+    border-radius: var(--radius-lg); padding: 10px 16px;
+    font-size: 13px; color: var(--cream-dim);
+  }
+  .save-bar i { font-size: 16px; flex-shrink: 0; }
+  .btn-bar { display: flex; gap: 8px; margin-left: auto; flex-shrink: 0; }
+  .btn-outline {
+    font-size: 12px; padding: 5px 13px;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.28); border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.08); color: var(--cream);
+    transition: background 0.15s; display: inline-flex; align-items: center; gap: 5px;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.16); }
 
-.filters {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
+  /* WHITE PANEL */
+  .panel { background: var(--bg-panel); border-radius: var(--radius-xl); padding: 1.5rem; }
 
-.filter-select {
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: var(--border-radius-md);
-  border: 0.5px solid var(--color-border-secondary);
-  background: var(--color-background-primary);
-  color: var(--color-text-primary);
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-}
+  /* FILTERS */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  .filter-select, .search-input {
+    font-size: 12px; padding: 6px 10px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-panel-med);
+    background: var(--bg-panel); color: var(--text-panel);
+    font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none;
+  }
+  .search-input { width: 170px; }
 
-.event-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
+  /* LEGEND */
+  .legend {
+    display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 1rem;
+    font-size: 11px; color: var(--text-panel-2); align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
 
-.event-table thead tr {
-  border-bottom: 0.5px solid var(--color-border-tertiary);
-}
+  /* TABLE */
+  .event-table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  .event-table thead tr { border-bottom: 0.5px solid var(--border-panel); }
+  .event-table th {
+    text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 500;
+    color: var(--text-panel-2); text-transform: uppercase; letter-spacing: 0.5px;
+    cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  .event-table th:hover { color: var(--text-panel); }
+  .event-table td {
+    padding: 10px 10px; vertical-align: middle;
+    border-bottom: 0.5px solid var(--border-panel); overflow: hidden;
+  }
+  .event-table tr:hover td { background: var(--bg-panel-2); }
 
-.event-table th {
-  text-align: left;
-  padding: 8px 10px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  cursor: pointer;
-  user-select: none;
-}
-.event-table th:hover { color: var(--color-text-primary); }
+  .col-date   { width: 80px; }
+  .col-name   { width: auto; }
+  .col-cat    { width: 90px; }
+  .col-supply { width: 120px; }
+  .col-recruit{ width: 120px; }
+  .col-status { width: 110px; }
+  .col-notes  { width: 140px; }
 
-.event-table td {
-  padding: 10px 10px;
-  vertical-align: top;
-  border-bottom: 0.5px solid var(--color-border-tertiary);
-}
+  .event-name      { font-weight: 500; font-size: 13px; color: var(--text-panel); }
+  .event-date-cell { font-size: 12px; color: var(--text-panel-2); white-space: nowrap; }
 
-.event-table tr:hover td { background: var(--color-background-secondary); }
+  .deadline-badge {
+    display: inline-flex; align-items: center;
+    font-size: 11px; font-weight: 500;
+    padding: 3px 8px; border-radius: 20px; white-space: nowrap;
+  }
+  .db-green { background: var(--green-fill); color: var(--green-text); }
+  .db-amber { background: var(--amber-fill); color: var(--amber-text); }
+  .db-red   { background: var(--red-fill);   color: var(--red-text); }
+  .db-gray  { background: var(--gray-fill);  color: var(--gray-text); }
 
-.event-name { font-weight: 500; font-size: 13px; }
-.event-date { font-size: 12px; color: var(--color-text-secondary); }
+  .cat-pill {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    padding: 2px 7px; border-radius: 20px; letter-spacing: 0.2px; white-space: nowrap;
+  }
+  .cat-christmas { background:var(--red-fill);    color:var(--red-text); }
+  .cat-holiday   { background:var(--blue-fill);   color:var(--blue-text); }
+  .cat-conference{ background:var(--purple-fill); color:var(--purple-text); }
+  .cat-youth     { background:var(--green-fill);  color:var(--green-text); }
+  .cat-memorial  { background:var(--gray-fill);   color:var(--gray-text); }
+  .cat-special   { background:var(--amber-fill);  color:var(--amber-text); }
+  .cat-womens    { background:var(--pink-fill);   color:var(--pink-text); }
+  .cat-mens      { background:var(--teal-fill);   color:var(--teal-text); }
+  .cat-community { background:var(--coral-fill);  color:var(--coral-text); }
+  .cat-worship   { background:var(--purple-fill); color:var(--purple-text); }
 
-.deadline-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 20px;
-}
-.db-green { background: #EAF3DE; color: #3B6D11; }
-.db-amber { background: #FAEEDA; color: #854F0B; }
-.db-red { background: #FCEBEB; color: #A32D2D; }
-.db-gray { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .status-sel {
+    font-size: 11px; font-family: 'DM Sans', sans-serif;
+    border: 0.5px solid var(--border-panel-med); border-radius: var(--radius-md);
+    padding: 4px 6px; background: var(--bg-panel); color: var(--text-panel);
+    cursor: pointer; width: 100%; outline: none;
+  }
+  .notes-input {
+    font-size: 11px; font-family: 'DM Sans', sans-serif;
+    border: 0.5px solid var(--border-panel); border-radius: 4px;
+    padding: 4px 7px; width: 100%; background: transparent;
+    color: var(--text-panel); resize: none; min-height: 30px; outline: none;
+  }
+  .notes-input:focus { border-color: var(--border-panel-med); }
+  .empty-state { text-align: center; padding: 2rem; color: var(--text-panel-2); font-size: 13px; }
 
-.status-dot {
-  width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px;
-}
-.dot-done { background: #639922; }
-.dot-progress { background: #EF9F27; }
-.dot-todo { background: var(--color-text-secondary); }
-.dot-urgent { background: #E24B4A; }
+  /* CHECKLIST */
+  .cl-card {
+    background: var(--bg-panel); border: 0.5px solid var(--border-panel);
+    border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px;
+  }
+  .cl-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:8px; }
+  .cl-event  { font-weight:500; font-size:14px; color:var(--text-panel); }
+  .cl-date   { font-size:12px; color:var(--text-panel-2); margin-top:2px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .cl-items  { display:flex; flex-direction:column; gap:7px; }
+  .cl-item   { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text-panel-2); cursor:pointer; }
+  .cl-item input[type=checkbox] { margin-top:2px; cursor:pointer; flex-shrink:0; accent-color:#0f6e56; }
+  .cl-item.done > span { text-decoration:line-through; color:var(--text-panel-3); }
+  .progress-wrap { height:4px; background:var(--bg-panel-2); border-radius:4px; margin-top:12px; overflow:hidden; }
+  .progress-fill { height:4px; border-radius:4px; background:var(--green-accent); transition:width 0.3s; }
 
-.cat-pill {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 500;
-  padding: 2px 7px;
-  border-radius: 20px;
-  letter-spacing: 0.2px;
-}
-.cat-christmas { background: #FCEBEB; color: #A32D2D; }
-.cat-holiday { background: #E6F1FB; color: #185FA5; }
-.cat-conference { background: #EEEDFE; color: #534AB7; }
-.cat-youth { background: #EAF3DE; color: #3B6D11; }
-.cat-memorial { background: #F1EFE8; color: #5F5E5A; }
-.cat-special { background: #FAEEDA; color: #854F0B; }
-.cat-womens { background: #FBEAF0; color: #993556; }
-.cat-mens { background: #E1F5EE; color: #0F6E56; }
-.cat-community { background: #FAECE7; color: #993C1D; }
-.cat-worship { background: #EEEDFE; color: #3C3489; }
+  /* VOLUNTEER */
+  .vmsg-area {
+    width:100%; font-size:12px; font-family:'DM Sans',sans-serif;
+    border:0.5px solid var(--border-panel); border-radius:var(--radius-md);
+    padding:10px; background:var(--bg-panel-2); color:var(--text-panel);
+    resize:vertical; min-height:140px; line-height:1.6; outline:none; margin-top:10px;
+  }
+  .btn {
+    font-size:12px; padding:5px 13px; font-family:'DM Sans',sans-serif; cursor:pointer;
+    border:0.5px solid var(--border-panel-med); border-radius:var(--radius-md);
+    background:transparent; color:var(--text-panel); transition:background 0.15s;
+    display:inline-flex; align-items:center; gap:5px;
+  }
+  .btn:hover { background:var(--bg-panel-2); }
 
-.notes-input {
-  font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: 4px;
-  padding: 4px 7px;
-  width: 100%;
-  background: transparent;
-  color: var(--color-text-primary);
-  resize: none;
-  min-height: 32px;
-}
-.notes-input:focus { outline: none; border-color: var(--color-border-primary); }
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:24px; right:24px;
+    background:var(--cream); color:var(--teal-dark);
+    padding:10px 18px; border-radius:var(--radius-md);
+    font-size:13px; font-family:'DM Sans',sans-serif; font-weight:500;
+    opacity:0; transform:translateY(8px); transition:all 0.25s;
+    pointer-events:none; z-index:999;
+  }
+  .toast.show { opacity:1; transform:translateY(0); }
 
-.status-sel {
-  font-size: 11px;
-  font-family: 'DM Sans', sans-serif;
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-md);
-  padding: 3px 6px;
-  background: transparent;
-  color: var(--color-text-primary);
-  cursor: pointer;
-}
-
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 0.75rem;
-}
-
-.checklist-card {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
-  padding: 1rem 1.25rem;
-  margin-bottom: 10px;
-}
-
-.cl-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.cl-event { font-weight: 500; font-size: 14px; }
-.cl-date { font-size: 12px; color: var(--color-text-secondary); }
-
-.cl-items { display: flex; flex-direction: column; gap: 6px; }
-
-.cl-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--color-text-secondary);
-}
-
-.cl-item input[type=checkbox] { margin-top: 2px; cursor: pointer; flex-shrink: 0; }
-.cl-item.done span { text-decoration: line-through; color: var(--color-text-tertiary); }
-
-.progress-bar-wrap {
-  height: 4px;
-  background: var(--color-background-secondary);
-  border-radius: 4px;
-  margin-top: 10px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 4px;
-  border-radius: 4px;
-  background: #639922;
-  transition: width 0.3s;
-}
-
-.view-toggle { margin-left: auto; }
-
-.legend {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-  font-size: 11px;
-  color: var(--color-text-secondary);
-  align-items: center;
-}
-.legend-item { display: flex; align-items: center; gap: 5px; }
-
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  color: var(--color-text-secondary);
-  font-size: 13px;
-}
-
-.search-input {
-  font-size: 12px;
-  padding: 5px 10px;
-  border: 0.5px solid var(--color-border-secondary);
-  border-radius: var(--border-radius-md);
-  background: var(--color-background-primary);
-  color: var(--color-text-primary);
-  font-family: 'DM Sans', sans-serif;
-  width: 160px;
-}
-.search-input:focus { outline: none; }
-
-.urgency-row { font-weight: 500; }
+  .section-intro { font-size:13px; color:var(--cream-dim); margin-bottom:1rem; }
 </style>
+</head>
+<body>
 
-<div class="wrap">
-  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">FWC 2026 Events Coordination Dashboard</h2>
-  <h1 class="title">FWC Events 2026</h1>
-  <p class="subtitle">Your coordination hub — supply deadlines, task tracking & volunteer runway</p>
+<div class="header">
+  <div class="header-inner">
+    <h1 class="title">FWC Events 2026</h1>
+    <p class="subtitle">Coordination hub — supply deadlines, task tracking &amp; volunteer runway</p>
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div class="tabs">
+      <button class="tab active" id="tab-btn-timeline" onclick="switchTab('timeline')">
+        <i class="ti ti-calendar-event"></i> Timeline &amp; Supplies
+      </button>
+      <button class="tab" id="tab-btn-checklist" onclick="switchTab('checklist')">
+        <i class="ti ti-checklist"></i> Prep Checklist
+      </button>
+      <button class="tab" id="tab-btn-volunteer" onclick="switchTab('volunteer')">
+        <i class="ti ti-speakerphone"></i> Volunteer Comms
+      </button>
+    </div>
+  </div>
+</div>
 
-  <div class="summary-grid" id="summaryGrid"></div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('timeline')">Timeline & Supplies</button>
-    <button class="tab" onclick="switchTab('checklist')">Prep Checklist</button>
-    <button class="tab" onclick="switchTab('volunteer')">Volunteer Comms</button>
+<div class="main">
+  <div class="save-bar">
+    <i class="ti ti-device-floppy"></i>
+    <span>Changes auto-save to your browser. Use <strong>Export</strong> to back up &amp; share with your partner lead.</span>
+    <div class="btn-bar">
+      <button class="btn-outline" onclick="exportData()"><i class="ti ti-download"></i> Export</button>
+      <label class="btn-outline" style="cursor:pointer;">
+        <i class="ti ti-upload"></i> Import
+        <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+      </label>
+    </div>
   </div>
 
+  <!-- TIMELINE -->
   <div id="tab-timeline">
-    <div class="legend">
-      <span class="legend-item"><span class="deadline-badge db-green" style="padding:2px 6px;">✓ 30+ days</span> Comfortable</span>
-      <span class="legend-item"><span class="deadline-badge db-amber" style="padding:2px 6px;">!</span> 14–30 days — order now</span>
-      <span class="legend-item"><span class="deadline-badge db-red" style="padding:2px 6px;">!!</span> Under 14 days — urgent</span>
-      <span class="legend-item"><span class="deadline-badge db-gray" style="padding:2px 6px;">–</span> Past</span>
+    <div class="panel">
+      <div class="legend">
+        <span class="legend-item"><span class="deadline-badge db-green">✓ 30+ days</span> Comfortable</span>
+        <span class="legend-item"><span class="deadline-badge db-amber">! 14–30d</span> Order now</span>
+        <span class="legend-item"><span class="deadline-badge db-red">!! &lt;14d</span> Urgent</span>
+        <span class="legend-item"><span class="deadline-badge db-gray">–</span> Past</span>
+      </div>
+      <div class="filters">
+        <input class="search-input" type="text" id="searchBox" placeholder="Search events…" oninput="renderTable()">
+        <select class="filter-select" id="monthFilter" onchange="renderTable()">
+          <option value="">All months</option>
+          <option>June</option><option>July</option><option>August</option>
+          <option>September</option><option>October</option><option>November</option><option>December</option>
+        </select>
+        <select class="filter-select" id="urgencyFilter" onchange="renderTable()">
+          <option value="">All urgency</option>
+          <option value="urgent">Urgent (&lt;14d)</option>
+          <option value="soon">Order now (14–30d)</option>
+          <option value="ok">Comfortable (30d+)</option>
+        </select>
+        <select class="filter-select" id="statusFilter" onchange="renderTable()">
+          <option value="">All statuses</option>
+          <option>Not started</option><option>In progress</option><option>Ordered</option><option>Done</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="event-table">
+          <thead>
+            <tr>
+              <th class="col-date"    onclick="sortBy('date')">Date <i class="ti ti-arrows-sort" style="font-size:10px"></i></th>
+              <th class="col-name"    onclick="sortBy('name')">Event <i class="ti ti-arrows-sort" style="font-size:10px"></i></th>
+              <th class="col-cat">Category</th>
+              <th class="col-supply"  onclick="sortBy('supply')">Order supplies by <i class="ti ti-arrows-sort" style="font-size:10px"></i></th>
+              <th class="col-recruit" onclick="sortBy('recruit')">Recruit by <i class="ti ti-arrows-sort" style="font-size:10px"></i></th>
+              <th class="col-status">Status</th>
+              <th class="col-notes">Notes</th>
+            </tr>
+          </thead>
+          <tbody id="eventTbody"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="filters">
-      <input class="search-input" type="text" placeholder="Search events..." oninput="renderTable()" id="searchBox">
-      <select class="filter-select" onchange="renderTable()" id="monthFilter">
-        <option value="">All months</option>
-        <option>June</option><option>July</option><option>August</option>
-        <option>September</option><option>October</option><option>November</option><option>December</option>
-      </select>
-      <select class="filter-select" onchange="renderTable()" id="urgencyFilter">
-        <option value="">All urgency</option>
-        <option value="urgent">Urgent (&lt;14d)</option>
-        <option value="soon">Order now (14–30d)</option>
-        <option value="ok">Comfortable (30d+)</option>
-      </select>
-      <select class="filter-select" onchange="renderTable()" id="statusFilter">
-        <option value="">All statuses</option>
-        <option value="Not started">Not started</option>
-        <option value="In progress">In progress</option>
-        <option value="Ordered">Ordered</option>
-        <option value="Done">Done</option>
-      </select>
-    </div>
-    <table class="event-table">
-      <thead>
-        <tr>
-          <th onclick="sortBy('date')">Date <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
-          <th onclick="sortBy('name')">Event</th>
-          <th>Category</th>
-          <th onclick="sortBy('supplyDeadline')">Supply order by <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
-          <th onclick="sortBy('volunteerDeadline')">Recruit by <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
-          <th>Status</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody id="eventTbody"></tbody>
-    </table>
   </div>
 
+  <!-- CHECKLIST -->
   <div id="tab-checklist" style="display:none;">
-    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">Standard prep checklist for each upcoming event. Check off tasks as you go — progress saves in this session.</p>
+    <p class="section-intro">Standard 8-step prep checklist per event. Progress saves automatically.</p>
     <div id="checklistContainer"></div>
   </div>
 
+  <!-- VOLUNTEER -->
   <div id="tab-volunteer" style="display:none;">
-    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">Draft recruitment messages for each event. Click "Open in Gmail" to send, or copy to your platform.</p>
+    <p class="section-intro">Draft recruitment messages for each upcoming event. Edit, then copy or open in email.</p>
     <div id="volunteerContainer"></div>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const TODAY = new Date(2026, 4, 14);
+const SUPPLY_LEAD_DAYS = 21;
+const RECRUIT_LEAD_DAYS = 14;
 
 const EVENTS = [
-  { name: "Father's Day", date: new Date(2026,5,21), cat: "holiday" },
-  { name: "Independence Day", date: new Date(2026,6,5), cat: "holiday" },
-  { name: "YA Collab", date: new Date(2026,6,10), cat: "youth" },
-  { name: "High School Lake Day", date: new Date(2026,6,11), cat: "youth" },
-  { name: "Remembering Bishop Tafoya", date: new Date(2026,6,19), cat: "memorial" },
-  { name: "Back to School", date: new Date(2026,6,26), cat: "community" },
-  { name: "FWC Birthday + Honoring Lead Pastors", date: new Date(2026,7,2), cat: "special" },
-  { name: "Couples Connection", date: new Date(2026,7,8), cat: "special" },
-  { name: "Just One Conference", date: new Date(2026,7,21), cat: "conference" },
-  { name: "Grandparents Day", date: new Date(2026,8,13), cat: "community" },
-  { name: "Man Up Conference", date: new Date(2026,8,19), cat: "mens" },
-  { name: "Ordination Day", date: new Date(2026,9,11), cat: "worship" },
-  { name: "Relentless Basketball Tournament", date: new Date(2026,9,17), cat: "youth" },
-  { name: "Hallelujah Festival", date: new Date(2026,9,22), cat: "community" },
-  { name: "FWC Conference", date: new Date(2026,9,30), cat: "conference" },
-  { name: "Ladies Friendsgiving", date: new Date(2026,10,10), cat: "womens" },
-  { name: "Men's Let's Get Stuffed", date: new Date(2026,10,12), cat: "mens" },
-  { name: "Christmas Decorating", date: new Date(2026,10,28), cat: "christmas" },
-  { name: "Ladies Jingle & Mingle", date: new Date(2026,11,8), cat: "womens" },
-  { name: "FWC Kids Christmas Party", date: new Date(2026,11,16), cat: "christmas" },
-  { name: "Christmas Program", date: new Date(2026,11,20), cat: "christmas" },
-  { name: "Christmas Candlelight", date: new Date(2026,11,24), cat: "worship" },
-  { name: "NYE Service", date: new Date(2026,11,31), cat: "worship" },
+  { name: "Father's Day",                        date: new Date(2026,5,21),  cat: "holiday" },
+  { name: "Independence Day",                     date: new Date(2026,6,5),   cat: "holiday" },
+  { name: "YA Collab",                            date: new Date(2026,6,10),  cat: "youth" },
+  { name: "High School Lake Day",                 date: new Date(2026,6,11),  cat: "youth" },
+  { name: "Remembering Bishop Tafoya",            date: new Date(2026,6,19),  cat: "memorial" },
+  { name: "Back to School",                       date: new Date(2026,6,26),  cat: "community" },
+  { name: "FWC Birthday + Honoring Lead Pastors", date: new Date(2026,7,2),   cat: "special" },
+  { name: "Couples Connection",                   date: new Date(2026,7,8),   cat: "special" },
+  { name: "Just One Conference",                  date: new Date(2026,7,21),  cat: "conference" },
+  { name: "Grandparents Day",                     date: new Date(2026,8,13),  cat: "community" },
+  { name: "Man Up Conference",                    date: new Date(2026,8,19),  cat: "mens" },
+  { name: "Ordination Day",                       date: new Date(2026,9,11),  cat: "worship" },
+  { name: "Relentless Basketball Tournament",     date: new Date(2026,9,17),  cat: "youth" },
+  { name: "Hallelujah Festival",                  date: new Date(2026,9,22),  cat: "community" },
+  { name: "FWC Conference",                       date: new Date(2026,9,30),  cat: "conference" },
+  { name: "Ladies Friendsgiving",                 date: new Date(2026,10,10), cat: "womens" },
+  { name: "Men's Let's Get Stuffed",              date: new Date(2026,10,12), cat: "mens" },
+  { name: "Christmas Decorating",                 date: new Date(2026,10,28), cat: "christmas" },
+  { name: "Ladies Jingle & Mingle",               date: new Date(2026,11,8),  cat: "womens" },
+  { name: "FWC Kids Christmas Party",             date: new Date(2026,11,16), cat: "christmas" },
+  { name: "Christmas Program",                    date: new Date(2026,11,20), cat: "christmas" },
+  { name: "Christmas Candlelight",                date: new Date(2026,11,24), cat: "worship" },
+  { name: "NYE Service",                          date: new Date(2026,11,31), cat: "worship" },
 ];
 
 const CAT_LABELS = {
-  christmas: "Christmas", holiday: "Holiday", conference: "Conference",
-  youth: "Youth", memorial: "Memorial", special: "Special",
-  womens: "Women's", mens: "Men's", community: "Community", worship: "Worship"
+  christmas:"Christmas",holiday:"Holiday",conference:"Conference",
+  youth:"Youth",memorial:"Memorial",special:"Special",
+  womens:"Women's",mens:"Men's",community:"Community",worship:"Worship"
 };
-
-const SUPPLY_LEAD = 21;
-const RECRUIT_LEAD = 14;
-
-function daysUntil(d) {
-  return Math.round((d - TODAY) / 86400000);
-}
-
-function supplyDeadline(ev) {
-  return new Date(ev.date.getTime() - SUPPLY_LEAD * 86400000);
-}
-function recruitDeadline(ev) {
-  return new Date(ev.date.getTime() - RECRUIT_LEAD * 86400000);
-}
-
-function urgencyClass(deadline) {
-  const d = daysUntil(deadline);
-  if (d < 0) return "db-gray";
-  if (d < 14) return "db-red";
-  if (d < 30) return "db-amber";
-  return "db-green";
-}
-
-function urgencyLabel(deadline) {
-  const d = daysUntil(deadline);
-  if (d < 0) return "–";
-  if (d < 14) return `${d}d — urgent`;
-  if (d < 30) return `${d}d — order now`;
-  return `${d}d`;
-}
-
-function fmtDate(d) {
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-const statuses = {};
-const notes = {};
-EVENTS.forEach((e, i) => {
-  statuses[i] = "Not started";
-  notes[i] = "";
-});
-
-let sortCol = "date";
-let sortDir = 1;
-
-function sortBy(col) {
-  if (sortCol === col) sortDir *= -1;
-  else { sortCol = col; sortDir = 1; }
-  renderTable();
-}
-
-function urgencyScore(ev) {
-  const d = daysUntil(supplyDeadline(ev));
-  return d;
-}
-
-function filteredEvents() {
-  const search = (document.getElementById("searchBox")||{}).value || "";
-  const month = (document.getElementById("monthFilter")||{}).value || "";
-  const urg = (document.getElementById("urgencyFilter")||{}).value || "";
-  const stat = (document.getElementById("statusFilter")||{}).value || "";
-
-  return EVENTS.map((e, i) => ({...e, idx: i})).filter(e => {
-    if (search && !e.name.toLowerCase().includes(search.toLowerCase())) return false;
-    if (month && e.date.toLocaleString('en-US',{month:'long'}) !== month) return false;
-    if (urg) {
-      const d = daysUntil(supplyDeadline(e));
-      if (urg === "urgent" && !(d >= 0 && d < 14)) return false;
-      if (urg === "soon" && !(d >= 14 && d < 30)) return false;
-      if (urg === "ok" && !(d >= 30)) return false;
-    }
-    if (stat && statuses[e.idx] !== stat) return false;
-    return true;
-  });
-}
-
-function renderTable() {
-  const tbody = document.getElementById("eventTbody");
-  if (!tbody) return;
-  let evs = filteredEvents();
-
-  evs.sort((a, b) => {
-    let av, bv;
-    if (sortCol === "date") { av = a.date; bv = b.date; }
-    else if (sortCol === "name") { av = a.name; bv = b.name; }
-    else if (sortCol === "supplyDeadline") { av = supplyDeadline(a); bv = supplyDeadline(b); }
-    else if (sortCol === "volunteerDeadline") { av = recruitDeadline(a); bv = recruitDeadline(b); }
-    else return 0;
-    if (av < bv) return -sortDir;
-    if (av > bv) return sortDir;
-    return 0;
-  });
-
-  if (evs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No events match your filters.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = evs.map(e => {
-    const sd = supplyDeadline(e);
-    const rd = recruitDeadline(e);
-    const sc = urgencyClass(sd);
-    const rc = urgencyClass(rd);
-    const sl = urgencyLabel(sd);
-    const rl = urgencyLabel(rd);
-    const past = daysUntil(e.date) < 0;
-    const catCls = "cat-" + e.cat;
-    const stat = statuses[e.idx];
-    const dotCls = stat === "Done" ? "dot-done" : stat === "In progress" ? "dot-progress" : stat === "Ordered" ? "dot-progress" : daysUntil(sd) < 7 && daysUntil(e.date) >= 0 ? "dot-urgent" : "dot-todo";
-
-    return `<tr>
-      <td><div class="event-date">${fmtDate(e.date)}</div></td>
-      <td><div class="event-name" style="${past ? 'opacity:0.5;' : ''}">${e.name}</div></td>
-      <td><span class="cat-pill ${catCls}">${CAT_LABELS[e.cat]}</span></td>
-      <td>${past ? '<span style="opacity:0.4;font-size:12px;">Past</span>' : `<span class="deadline-badge ${sc}">${sl}</span>`}</td>
-      <td>${past ? '<span style="opacity:0.4;font-size:12px;">Past</span>' : `<span class="deadline-badge ${rc}">${rl}</span>`}</td>
-      <td>
-        <select class="status-sel" onchange="updateStatus(${e.idx}, this.value)">
-          ${["Not started","In progress","Ordered","Done"].map(s => `<option${s===stat?' selected':''}>${s}</option>`).join('')}
-        </select>
-      </td>
-      <td><textarea class="notes-input" rows="1" placeholder="Add note..." onchange="updateNote(${e.idx}, this.value)">${notes[e.idx]}</textarea></td>
-    </tr>`;
-  }).join('');
-  renderSummary();
-}
-
-function updateStatus(idx, val) {
-  statuses[idx] = val;
-  renderSummary();
-  renderChecklist();
-}
-
-function updateNote(idx, val) {
-  notes[idx] = val;
-}
-
-function renderSummary() {
-  const grid = document.getElementById("summaryGrid");
-  if (!grid) return;
-  const upcoming = EVENTS.filter(e => daysUntil(e.date) >= 0);
-  const urgent = EVENTS.filter(e => daysUntil(e.date) >= 0 && daysUntil(supplyDeadline(e)) < 14 && daysUntil(supplyDeadline(e)) >= 0);
-  const done = Object.values(statuses).filter(s => s === "Done").length;
-  const nextEv = EVENTS.filter(e => daysUntil(e.date) >= 0).sort((a,b) => a.date-b.date)[0];
-  const nextDays = nextEv ? daysUntil(nextEv.date) : "—";
-
-  grid.innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Total Events</div>
-      <div class="stat-val">${EVENTS.length}</div>
-      <div class="stat-sub">${upcoming.length} upcoming</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Next Event In</div>
-      <div class="stat-val">${nextDays}<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:300"> days</span></div>
-      <div class="stat-sub">${nextEv ? nextEv.name : '—'}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Urgent Supply Orders</div>
-      <div class="stat-val" style="color:${urgent.length > 0 ? '#A32D2D' : 'inherit'}">${urgent.length}</div>
-      <div class="stat-sub">Need ordering within 14 days</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Supplies Done</div>
-      <div class="stat-val" style="color:#3B6D11">${done}</div>
-      <div class="stat-sub">of ${EVENTS.length} events</div>
-    </div>
-  `;
-}
 
 const CHECKLIST_TASKS = [
   "Confirm event date & location",
@@ -573,99 +408,245 @@ const CHECKLIST_TASKS = [
   "Post-event: pack down & store supplies",
 ];
 
-const checkState = {};
-EVENTS.forEach((e, ei) => {
-  checkState[ei] = CHECKLIST_TASKS.map(() => false);
-});
+let statuses={}, notes={}, checks={};
+EVENTS.forEach((_,i)=>{ statuses[i]="Not started"; notes[i]=""; checks[i]=CHECKLIST_TASKS.map(()=>false); });
+loadLocal();
 
-function renderChecklist() {
-  const container = document.getElementById("checklistContainer");
-  if (!container) return;
-  const upcoming = EVENTS.map((e,i) => ({...e,idx:i})).filter(e => daysUntil(e.date) >= 0).sort((a,b) => a.date - b.date);
+let sortCol="date", sortDir=1;
 
-  container.innerHTML = upcoming.slice(0, 8).map(e => {
-    const done = checkState[e.idx].filter(Boolean).length;
-    const pct = Math.round(done / CHECKLIST_TASKS.length * 100);
-    const sd = fmtDate(supplyDeadline(e));
-    const uc = urgencyClass(supplyDeadline(e));
-    return `<div class="checklist-card">
+function daysUntil(d){ return Math.round((d - new Date())/86400000); }
+function supplyDL(ev){ return new Date(ev.date.getTime()-SUPPLY_LEAD_DAYS*86400000); }
+function recruitDL(ev){ return new Date(ev.date.getTime()-RECRUIT_LEAD_DAYS*86400000); }
+
+function urgClass(dl){
+  const d=daysUntil(dl);
+  if(d<0) return"db-gray"; if(d<14) return"db-red"; if(d<30) return"db-amber"; return"db-green";
+}
+function urgLabel(dl){
+  const d=daysUntil(dl);
+  if(d<0) return"–"; if(d<14) return d+"d — urgent"; if(d<30) return d+"d — order now"; return d+"d";
+}
+function fmtDate(d){ return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function fmtMonth(d){ return d.toLocaleString('en-US',{month:'long'}); }
+
+function sortBy(col){ if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=1;} renderTable(); }
+
+function filteredEvents(){
+  const q=(document.getElementById("searchBox")||{}).value||"";
+  const mo=(document.getElementById("monthFilter")||{}).value||"";
+  const urg=(document.getElementById("urgencyFilter")||{}).value||"";
+  const st=(document.getElementById("statusFilter")||{}).value||"";
+  return EVENTS.map((e,i)=>({...e,idx:i})).filter(e=>{
+    if(q&&!e.name.toLowerCase().includes(q.toLowerCase())) return false;
+    if(mo&&fmtMonth(e.date)!==mo) return false;
+    if(urg){
+      const d=daysUntil(supplyDL(e));
+      if(urg==="urgent"&&!(d>=0&&d<14)) return false;
+      if(urg==="soon"&&!(d>=14&&d<30)) return false;
+      if(urg==="ok"&&d<30) return false;
+    }
+    if(st&&statuses[e.idx]!==st) return false;
+    return true;
+  });
+}
+
+function renderTable(){
+  const tbody=document.getElementById("eventTbody"); if(!tbody) return;
+  let evs=filteredEvents();
+  evs.sort((a,b)=>{
+    let av,bv;
+    if(sortCol==="date"){av=a.date;bv=b.date;}
+    else if(sortCol==="name"){av=a.name.toLowerCase();bv=b.name.toLowerCase();}
+    else if(sortCol==="supply"){av=supplyDL(a);bv=supplyDL(b);}
+    else if(sortCol==="recruit"){av=recruitDL(a);bv=recruitDL(b);}
+    else return 0;
+    return av<bv?-sortDir:av>bv?sortDir:0;
+  });
+  if(!evs.length){
+    tbody.innerHTML=`<tr><td colspan="7" class="empty-state">No events match your filters.</td></tr>`; return;
+  }
+  tbody.innerHTML=evs.map(e=>{
+    const sd=supplyDL(e),rd=recruitDL(e);
+    const past=daysUntil(e.date)<0;
+    const stat=statuses[e.idx];
+    return `<tr>
+      <td class="col-date"><span class="event-date-cell">${fmtDate(e.date)}</span></td>
+      <td class="col-name"><span class="event-name" style="${past?'opacity:0.45':''}">${e.name}</span></td>
+      <td class="col-cat"><span class="cat-pill cat-${e.cat}">${CAT_LABELS[e.cat]}</span></td>
+      <td class="col-supply">${past?'<span style="opacity:0.4;font-size:11px;color:var(--text-panel-2)">Past</span>':`<span class="deadline-badge ${urgClass(sd)}">${urgLabel(sd)}</span>`}</td>
+      <td class="col-recruit">${past?'<span style="opacity:0.4;font-size:11px;color:var(--text-panel-2)">Past</span>':`<span class="deadline-badge ${urgClass(rd)}">${urgLabel(rd)}</span>`}</td>
+      <td class="col-status">
+        <select class="status-sel" onchange="updateStatus(${e.idx},this.value)">
+          ${["Not started","In progress","Ordered","Done"].map(s=>`<option${s===stat?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td class="col-notes">
+        <textarea class="notes-input" rows="1" placeholder="Add note…" onchange="updateNote(${e.idx},this.value)">${notes[e.idx]||''}</textarea>
+      </td>
+    </tr>`;
+  }).join('');
+  renderSummary();
+}
+
+function updateStatus(idx,val){ statuses[idx]=val; saveLocal(); renderSummary();
+  if(document.getElementById("tab-checklist").style.display!=="none") renderChecklist(); }
+function updateNote(idx,val){ notes[idx]=val; saveLocal(); }
+
+function renderSummary(){
+  const grid=document.getElementById("summaryGrid"); if(!grid) return;
+  const upcoming=EVENTS.filter(e=>daysUntil(e.date)>=0);
+  const urgent=EVENTS.filter(e=>daysUntil(e.date)>=0&&daysUntil(supplyDL(e))<14&&daysUntil(supplyDL(e))>=0);
+  const done=Object.values(statuses).filter(s=>s==="Done").length;
+  const nextEv=[...upcoming].sort((a,b)=>a.date-b.date)[0];
+  const nd=nextEv?daysUntil(nextEv.date):"—";
+  grid.innerHTML=`
+    <div class="stat-card">
+      <div class="stat-label">Total Events</div>
+      <div class="stat-val">${EVENTS.length}</div>
+      <div class="stat-sub">${upcoming.length} upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Next Event In</div>
+      <div class="stat-val">${nd}<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:300"> days</span></div>
+      <div class="stat-sub">${nextEv?nextEv.name:'—'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Urgent Orders</div>
+      <div class="stat-val" style="${urgent.length>0?'color:#f09595':''}">${urgent.length}</div>
+      <div class="stat-sub">Need ordering in &lt;14 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Supplies Done</div>
+      <div class="stat-val" style="color:#9FE1CB">${done}</div>
+      <div class="stat-sub">of ${EVENTS.length} events</div>
+    </div>`;
+}
+
+function renderChecklist(){
+  const container=document.getElementById("checklistContainer"); if(!container) return;
+  const upcoming=EVENTS.map((e,i)=>({...e,idx:i})).filter(e=>daysUntil(e.date)>=0).sort((a,b)=>a.date-b.date);
+  container.innerHTML=upcoming.map(e=>{
+    const done=checks[e.idx].filter(Boolean).length;
+    const pct=Math.round(done/CHECKLIST_TASKS.length*100);
+    const sd=supplyDL(e);
+    return `<div class="cl-card">
       <div class="cl-header">
         <div>
           <div class="cl-event">${e.name}</div>
-          <div class="cl-date">${fmtDate(e.date)} · <span class="deadline-badge ${uc}" style="padding:1px 6px;font-size:10px">Order supplies by ${sd}</span></div>
+          <div class="cl-date">${fmtDate(e.date)}
+            <span class="deadline-badge ${urgClass(sd)}" style="font-size:10px;padding:2px 7px">Order by ${fmtDate(sd)}</span>
+          </div>
         </div>
-        <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);">${done}/${CHECKLIST_TASKS.length}</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-panel-2);white-space:nowrap;">${done}/${CHECKLIST_TASKS.length}</div>
       </div>
       <div class="cl-items">
-        ${CHECKLIST_TASKS.map((t,ti) => `
-          <label class="cl-item${checkState[e.idx][ti]?' done':''}">
-            <input type="checkbox" ${checkState[e.idx][ti]?'checked':''} onchange="toggleCheck(${e.idx},${ti},this.checked)">
+        ${CHECKLIST_TASKS.map((t,ti)=>`
+          <label class="cl-item${checks[e.idx][ti]?' done':''}">
+            <input type="checkbox" ${checks[e.idx][ti]?'checked':''} onchange="toggleCheck(${e.idx},${ti},this.checked)">
             <span>${t}</span>
-          </label>
-        `).join('')}
+          </label>`).join('')}
       </div>
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 }
 
-function toggleCheck(ei, ti, val) {
-  checkState[ei][ti] = val;
-  renderChecklist();
-}
+function toggleCheck(ei,ti,val){ checks[ei][ti]=val; saveLocal(); renderChecklist(); }
 
-function renderVolunteer() {
-  const container = document.getElementById("volunteerContainer");
-  if (!container) return;
-  const upcoming = EVENTS.map((e,i)=>({...e,idx:i})).filter(e=>daysUntil(e.date)>=0).sort((a,b)=>a.date-b.date);
-
-  container.innerHTML = upcoming.slice(0,6).map(e => {
-    const rd = recruitDeadline(e);
-    const uc = urgencyClass(rd);
-    const daysLeft = daysUntil(rd);
-    const msg = `Hi team! 🙌\n\nWe're looking for volunteers to help build and decorate for our upcoming event:\n\n📅 ${e.name} — ${fmtDate(e.date)}\n\nWe need helpers for setup, decorating, and day-of support. If you're available and excited to serve, please reply to this message by ${fmtDate(rd)}.\n\nThank you for your heart to serve — we couldn't do this without you! 💛\n\nBlessings,\n[Your Name]`;
-
-    return `<div class="checklist-card">
+function renderVolunteer(){
+  const container=document.getElementById("volunteerContainer"); if(!container) return;
+  const upcoming=EVENTS.map((e,i)=>({...e,idx:i})).filter(e=>daysUntil(e.date)>=0).sort((a,b)=>a.date-b.date);
+  container.innerHTML=upcoming.map(e=>{
+    const rd=recruitDL(e); const dLeft=daysUntil(rd);
+    const msg=`Hi FWC family! 🙌\n\nWe need volunteers to help build and decorate for:\n\n📅 ${e.name} — ${fmtDate(e.date)}\n\nWe're looking for helpers for setup, decorating, and day-of support. If you have a heart to serve and can join us, please reply by ${fmtDate(rd)}.\n\nThank you so much — we couldn't do this without you! 💛\n\nBlessings,\n[Your Name]`;
+    return `<div class="cl-card">
       <div class="cl-header">
         <div>
           <div class="cl-event">${e.name}</div>
           <div class="cl-date">${fmtDate(e.date)}</div>
         </div>
-        <span class="deadline-badge ${uc}" style="font-size:11px;">Recruit by ${fmtDate(rd)}${daysLeft >= 0 ? ' ('+daysLeft+'d)' : ' (past)'}</span>
+        <span class="deadline-badge ${urgClass(rd)}" style="font-size:11px;flex-shrink:0">Recruit by ${fmtDate(rd)}${dLeft>=0?' ('+dLeft+'d)':' (past)'}</span>
       </div>
-      <textarea style="width:100%;font-size:12px;font-family:'DM Sans',sans-serif;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;background:var(--color-background-secondary);color:var(--color-text-primary);resize:vertical;min-height:130px;" id="vmsg-${e.idx}">${msg}</textarea>
+      <textarea class="vmsg-area" id="vmsg-${e.idx}">${msg}</textarea>
       <div style="display:flex;gap:8px;margin-top:8px;">
-        <button onclick="copyMsg(${e.idx})" style="font-size:12px;padding:5px 12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);">
-          <i class="ti ti-copy" aria-hidden="true"></i> Copy
-        </button>
-        <button onclick="sendPrompt('Draft a more detailed volunteer recruitment message for the event: ${e.name.replace(/'/g,"\\'")} on ${fmtDate(e.date)}')" style="font-size:12px;padding:5px 12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);">
-          Customize ↗
-        </button>
+        <button class="btn" onclick="copyMsg(${e.idx})"><i class="ti ti-copy"></i> Copy message</button>
+        <button class="btn" onclick="mailto(${e.idx},'${e.name.replace(/'/g,"\\'")}')"><i class="ti ti-mail"></i> Open in email</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function copyMsg(idx) {
-  const ta = document.getElementById("vmsg-"+idx);
-  if (ta) {
-    navigator.clipboard.writeText(ta.value).catch(()=>{
-      ta.select(); document.execCommand('copy');
-    });
-  }
+function copyMsg(idx){
+  const ta=document.getElementById("vmsg-"+idx); if(!ta) return;
+  navigator.clipboard.writeText(ta.value).then(()=>showToast("Message copied!")).catch(()=>{
+    ta.select(); document.execCommand("copy"); showToast("Message copied!");
+  });
+}
+function mailto(idx,name){
+  const ta=document.getElementById("vmsg-"+idx);
+  const body=ta?encodeURIComponent(ta.value):"";
+  window.open(`mailto:?subject=${encodeURIComponent("Volunteers needed — "+name)}&body=${body}`);
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  ['timeline','checklist','volunteer'].forEach(n => {
-    const el = document.getElementById('tab-'+n);
-    if (el) el.style.display = n === name ? '' : 'none';
+function switchTab(name){
+  ["timeline","checklist","volunteer"].forEach(n=>{
+    document.getElementById("tab-"+n).style.display=n===name?"":"none";
+    const btn=document.getElementById("tab-btn-"+n);
+    if(btn) btn.classList.toggle("active",n===name);
   });
-  event.target.classList.add('active');
-  if (name === 'checklist') renderChecklist();
-  if (name === 'volunteer') renderVolunteer();
+  if(name==="checklist") renderChecklist();
+  if(name==="volunteer") renderVolunteer();
+}
+
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+function saveLocal(){
+  try{
+    localStorage.setItem("fwc_statuses",JSON.stringify(statuses));
+    localStorage.setItem("fwc_notes",JSON.stringify(notes));
+    localStorage.setItem("fwc_checks",JSON.stringify(checks));
+  }catch(e){}
+}
+function loadLocal(){
+  try{
+    const s=localStorage.getItem("fwc_statuses");
+    const n=localStorage.getItem("fwc_notes");
+    const c=localStorage.getItem("fwc_checks");
+    if(s) statuses=JSON.parse(s);
+    if(n) notes=JSON.parse(n);
+    if(c) checks=JSON.parse(c);
+  }catch(e){}
+}
+
+function exportData(){
+  const data={statuses,notes,checks,exportedAt:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="FWC_Events_Data_"+new Date().toISOString().slice(0,10)+".json";
+  a.click(); showToast("Data exported!");
+}
+function importData(evt){
+  const file=evt.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.statuses) statuses=data.statuses;
+      if(data.notes) notes=data.notes;
+      if(data.checks) checks=data.checks;
+      saveLocal(); renderTable(); renderSummary(); showToast("Data imported!");
+    }catch(err){ showToast("Import failed — invalid file."); }
+  };
+  reader.readAsText(file);
 }
 
 renderSummary();
 renderTable();
 </script>
+</body>
+</html>
