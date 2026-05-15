@@ -1,0 +1,671 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, .wrap { font-family: 'DM Sans', sans-serif; color: var(--color-text-primary); }
+
+.wrap { padding: 1.5rem 0; }
+
+h1.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 2px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  padding-bottom: 0;
+}
+
+.tab {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -0.5px;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 0;
+  transition: color 0.15s;
+}
+.tab.active {
+  color: var(--color-text-primary);
+  border-bottom: 2px solid var(--color-text-primary);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 26px;
+  font-weight: 500;
+  font-family: 'Playfair Display', serif;
+  line-height: 1;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-select {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.event-table thead tr {
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.event-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  user-select: none;
+}
+.event-table th:hover { color: var(--color-text-primary); }
+
+.event-table td {
+  padding: 10px 10px;
+  vertical-align: top;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.event-table tr:hover td { background: var(--color-background-secondary); }
+
+.event-name { font-weight: 500; font-size: 13px; }
+.event-date { font-size: 12px; color: var(--color-text-secondary); }
+
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.db-green { background: #EAF3DE; color: #3B6D11; }
+.db-amber { background: #FAEEDA; color: #854F0B; }
+.db-red { background: #FCEBEB; color: #A32D2D; }
+.db-gray { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px;
+}
+.dot-done { background: #639922; }
+.dot-progress { background: #EF9F27; }
+.dot-todo { background: var(--color-text-secondary); }
+.dot-urgent { background: #E24B4A; }
+
+.cat-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+.cat-christmas { background: #FCEBEB; color: #A32D2D; }
+.cat-holiday { background: #E6F1FB; color: #185FA5; }
+.cat-conference { background: #EEEDFE; color: #534AB7; }
+.cat-youth { background: #EAF3DE; color: #3B6D11; }
+.cat-memorial { background: #F1EFE8; color: #5F5E5A; }
+.cat-special { background: #FAEEDA; color: #854F0B; }
+.cat-womens { background: #FBEAF0; color: #993556; }
+.cat-mens { background: #E1F5EE; color: #0F6E56; }
+.cat-community { background: #FAECE7; color: #993C1D; }
+.cat-worship { background: #EEEDFE; color: #3C3489; }
+
+.notes-input {
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: 4px;
+  padding: 4px 7px;
+  width: 100%;
+  background: transparent;
+  color: var(--color-text-primary);
+  resize: none;
+  min-height: 32px;
+}
+.notes-input:focus { outline: none; border-color: var(--color-border-primary); }
+
+.status-sel {
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 3px 6px;
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.checklist-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+}
+
+.cl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.cl-event { font-weight: 500; font-size: 14px; }
+.cl-date { font-size: 12px; color: var(--color-text-secondary); }
+
+.cl-items { display: flex; flex-direction: column; gap: 6px; }
+
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.cl-item input[type=checkbox] { margin-top: 2px; cursor: pointer; flex-shrink: 0; }
+.cl-item.done span { text-decoration: line-through; color: var(--color-text-tertiary); }
+
+.progress-bar-wrap {
+  height: 4px;
+  background: var(--color-background-secondary);
+  border-radius: 4px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 4px;
+  border-radius: 4px;
+  background: #639922;
+  transition: width 0.3s;
+}
+
+.view-toggle { margin-left: auto; }
+
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  align-items: center;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.search-input {
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: 'DM Sans', sans-serif;
+  width: 160px;
+}
+.search-input:focus { outline: none; }
+
+.urgency-row { font-weight: 500; }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">FWC 2026 Events Coordination Dashboard</h2>
+  <h1 class="title">FWC Events 2026</h1>
+  <p class="subtitle">Your coordination hub — supply deadlines, task tracking & volunteer runway</p>
+
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('timeline')">Timeline & Supplies</button>
+    <button class="tab" onclick="switchTab('checklist')">Prep Checklist</button>
+    <button class="tab" onclick="switchTab('volunteer')">Volunteer Comms</button>
+  </div>
+
+  <div id="tab-timeline">
+    <div class="legend">
+      <span class="legend-item"><span class="deadline-badge db-green" style="padding:2px 6px;">✓ 30+ days</span> Comfortable</span>
+      <span class="legend-item"><span class="deadline-badge db-amber" style="padding:2px 6px;">!</span> 14–30 days — order now</span>
+      <span class="legend-item"><span class="deadline-badge db-red" style="padding:2px 6px;">!!</span> Under 14 days — urgent</span>
+      <span class="legend-item"><span class="deadline-badge db-gray" style="padding:2px 6px;">–</span> Past</span>
+    </div>
+    <div class="filters">
+      <input class="search-input" type="text" placeholder="Search events..." oninput="renderTable()" id="searchBox">
+      <select class="filter-select" onchange="renderTable()" id="monthFilter">
+        <option value="">All months</option>
+        <option>June</option><option>July</option><option>August</option>
+        <option>September</option><option>October</option><option>November</option><option>December</option>
+      </select>
+      <select class="filter-select" onchange="renderTable()" id="urgencyFilter">
+        <option value="">All urgency</option>
+        <option value="urgent">Urgent (&lt;14d)</option>
+        <option value="soon">Order now (14–30d)</option>
+        <option value="ok">Comfortable (30d+)</option>
+      </select>
+      <select class="filter-select" onchange="renderTable()" id="statusFilter">
+        <option value="">All statuses</option>
+        <option value="Not started">Not started</option>
+        <option value="In progress">In progress</option>
+        <option value="Ordered">Ordered</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
+    <table class="event-table">
+      <thead>
+        <tr>
+          <th onclick="sortBy('date')">Date <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
+          <th onclick="sortBy('name')">Event</th>
+          <th>Category</th>
+          <th onclick="sortBy('supplyDeadline')">Supply order by <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
+          <th onclick="sortBy('volunteerDeadline')">Recruit by <i class="ti ti-arrows-sort" style="font-size:11px" aria-hidden="true"></i></th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="eventTbody"></tbody>
+    </table>
+  </div>
+
+  <div id="tab-checklist" style="display:none;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">Standard prep checklist for each upcoming event. Check off tasks as you go — progress saves in this session.</p>
+    <div id="checklistContainer"></div>
+  </div>
+
+  <div id="tab-volunteer" style="display:none;">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">Draft recruitment messages for each event. Click "Open in Gmail" to send, or copy to your platform.</p>
+    <div id="volunteerContainer"></div>
+  </div>
+</div>
+
+<script>
+const TODAY = new Date(2026, 4, 14);
+
+const EVENTS = [
+  { name: "Father's Day", date: new Date(2026,5,21), cat: "holiday" },
+  { name: "Independence Day", date: new Date(2026,6,5), cat: "holiday" },
+  { name: "YA Collab", date: new Date(2026,6,10), cat: "youth" },
+  { name: "High School Lake Day", date: new Date(2026,6,11), cat: "youth" },
+  { name: "Remembering Bishop Tafoya", date: new Date(2026,6,19), cat: "memorial" },
+  { name: "Back to School", date: new Date(2026,6,26), cat: "community" },
+  { name: "FWC Birthday + Honoring Lead Pastors", date: new Date(2026,7,2), cat: "special" },
+  { name: "Couples Connection", date: new Date(2026,7,8), cat: "special" },
+  { name: "Just One Conference", date: new Date(2026,7,21), cat: "conference" },
+  { name: "Grandparents Day", date: new Date(2026,8,13), cat: "community" },
+  { name: "Man Up Conference", date: new Date(2026,8,19), cat: "mens" },
+  { name: "Ordination Day", date: new Date(2026,9,11), cat: "worship" },
+  { name: "Relentless Basketball Tournament", date: new Date(2026,9,17), cat: "youth" },
+  { name: "Hallelujah Festival", date: new Date(2026,9,22), cat: "community" },
+  { name: "FWC Conference", date: new Date(2026,9,30), cat: "conference" },
+  { name: "Ladies Friendsgiving", date: new Date(2026,10,10), cat: "womens" },
+  { name: "Men's Let's Get Stuffed", date: new Date(2026,10,12), cat: "mens" },
+  { name: "Christmas Decorating", date: new Date(2026,10,28), cat: "christmas" },
+  { name: "Ladies Jingle & Mingle", date: new Date(2026,11,8), cat: "womens" },
+  { name: "FWC Kids Christmas Party", date: new Date(2026,11,16), cat: "christmas" },
+  { name: "Christmas Program", date: new Date(2026,11,20), cat: "christmas" },
+  { name: "Christmas Candlelight", date: new Date(2026,11,24), cat: "worship" },
+  { name: "NYE Service", date: new Date(2026,11,31), cat: "worship" },
+];
+
+const CAT_LABELS = {
+  christmas: "Christmas", holiday: "Holiday", conference: "Conference",
+  youth: "Youth", memorial: "Memorial", special: "Special",
+  womens: "Women's", mens: "Men's", community: "Community", worship: "Worship"
+};
+
+const SUPPLY_LEAD = 21;
+const RECRUIT_LEAD = 14;
+
+function daysUntil(d) {
+  return Math.round((d - TODAY) / 86400000);
+}
+
+function supplyDeadline(ev) {
+  return new Date(ev.date.getTime() - SUPPLY_LEAD * 86400000);
+}
+function recruitDeadline(ev) {
+  return new Date(ev.date.getTime() - RECRUIT_LEAD * 86400000);
+}
+
+function urgencyClass(deadline) {
+  const d = daysUntil(deadline);
+  if (d < 0) return "db-gray";
+  if (d < 14) return "db-red";
+  if (d < 30) return "db-amber";
+  return "db-green";
+}
+
+function urgencyLabel(deadline) {
+  const d = daysUntil(deadline);
+  if (d < 0) return "–";
+  if (d < 14) return `${d}d — urgent`;
+  if (d < 30) return `${d}d — order now`;
+  return `${d}d`;
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+const statuses = {};
+const notes = {};
+EVENTS.forEach((e, i) => {
+  statuses[i] = "Not started";
+  notes[i] = "";
+});
+
+let sortCol = "date";
+let sortDir = 1;
+
+function sortBy(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  renderTable();
+}
+
+function urgencyScore(ev) {
+  const d = daysUntil(supplyDeadline(ev));
+  return d;
+}
+
+function filteredEvents() {
+  const search = (document.getElementById("searchBox")||{}).value || "";
+  const month = (document.getElementById("monthFilter")||{}).value || "";
+  const urg = (document.getElementById("urgencyFilter")||{}).value || "";
+  const stat = (document.getElementById("statusFilter")||{}).value || "";
+
+  return EVENTS.map((e, i) => ({...e, idx: i})).filter(e => {
+    if (search && !e.name.toLowerCase().includes(search.toLowerCase())) return false;
+    if (month && e.date.toLocaleString('en-US',{month:'long'}) !== month) return false;
+    if (urg) {
+      const d = daysUntil(supplyDeadline(e));
+      if (urg === "urgent" && !(d >= 0 && d < 14)) return false;
+      if (urg === "soon" && !(d >= 14 && d < 30)) return false;
+      if (urg === "ok" && !(d >= 30)) return false;
+    }
+    if (stat && statuses[e.idx] !== stat) return false;
+    return true;
+  });
+}
+
+function renderTable() {
+  const tbody = document.getElementById("eventTbody");
+  if (!tbody) return;
+  let evs = filteredEvents();
+
+  evs.sort((a, b) => {
+    let av, bv;
+    if (sortCol === "date") { av = a.date; bv = b.date; }
+    else if (sortCol === "name") { av = a.name; bv = b.name; }
+    else if (sortCol === "supplyDeadline") { av = supplyDeadline(a); bv = supplyDeadline(b); }
+    else if (sortCol === "volunteerDeadline") { av = recruitDeadline(a); bv = recruitDeadline(b); }
+    else return 0;
+    if (av < bv) return -sortDir;
+    if (av > bv) return sortDir;
+    return 0;
+  });
+
+  if (evs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No events match your filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = evs.map(e => {
+    const sd = supplyDeadline(e);
+    const rd = recruitDeadline(e);
+    const sc = urgencyClass(sd);
+    const rc = urgencyClass(rd);
+    const sl = urgencyLabel(sd);
+    const rl = urgencyLabel(rd);
+    const past = daysUntil(e.date) < 0;
+    const catCls = "cat-" + e.cat;
+    const stat = statuses[e.idx];
+    const dotCls = stat === "Done" ? "dot-done" : stat === "In progress" ? "dot-progress" : stat === "Ordered" ? "dot-progress" : daysUntil(sd) < 7 && daysUntil(e.date) >= 0 ? "dot-urgent" : "dot-todo";
+
+    return `<tr>
+      <td><div class="event-date">${fmtDate(e.date)}</div></td>
+      <td><div class="event-name" style="${past ? 'opacity:0.5;' : ''}">${e.name}</div></td>
+      <td><span class="cat-pill ${catCls}">${CAT_LABELS[e.cat]}</span></td>
+      <td>${past ? '<span style="opacity:0.4;font-size:12px;">Past</span>' : `<span class="deadline-badge ${sc}">${sl}</span>`}</td>
+      <td>${past ? '<span style="opacity:0.4;font-size:12px;">Past</span>' : `<span class="deadline-badge ${rc}">${rl}</span>`}</td>
+      <td>
+        <select class="status-sel" onchange="updateStatus(${e.idx}, this.value)">
+          ${["Not started","In progress","Ordered","Done"].map(s => `<option${s===stat?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td><textarea class="notes-input" rows="1" placeholder="Add note..." onchange="updateNote(${e.idx}, this.value)">${notes[e.idx]}</textarea></td>
+    </tr>`;
+  }).join('');
+  renderSummary();
+}
+
+function updateStatus(idx, val) {
+  statuses[idx] = val;
+  renderSummary();
+  renderChecklist();
+}
+
+function updateNote(idx, val) {
+  notes[idx] = val;
+}
+
+function renderSummary() {
+  const grid = document.getElementById("summaryGrid");
+  if (!grid) return;
+  const upcoming = EVENTS.filter(e => daysUntil(e.date) >= 0);
+  const urgent = EVENTS.filter(e => daysUntil(e.date) >= 0 && daysUntil(supplyDeadline(e)) < 14 && daysUntil(supplyDeadline(e)) >= 0);
+  const done = Object.values(statuses).filter(s => s === "Done").length;
+  const nextEv = EVENTS.filter(e => daysUntil(e.date) >= 0).sort((a,b) => a.date-b.date)[0];
+  const nextDays = nextEv ? daysUntil(nextEv.date) : "—";
+
+  grid.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Events</div>
+      <div class="stat-val">${EVENTS.length}</div>
+      <div class="stat-sub">${upcoming.length} upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Next Event In</div>
+      <div class="stat-val">${nextDays}<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:300"> days</span></div>
+      <div class="stat-sub">${nextEv ? nextEv.name : '—'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Urgent Supply Orders</div>
+      <div class="stat-val" style="color:${urgent.length > 0 ? '#A32D2D' : 'inherit'}">${urgent.length}</div>
+      <div class="stat-sub">Need ordering within 14 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Supplies Done</div>
+      <div class="stat-val" style="color:#3B6D11">${done}</div>
+      <div class="stat-sub">of ${EVENTS.length} events</div>
+    </div>
+  `;
+}
+
+const CHECKLIST_TASKS = [
+  "Confirm event date & location",
+  "Create supply list",
+  "Order / purchase supplies",
+  "Send volunteer recruitment message",
+  "Confirm volunteer headcount",
+  "Set up & decorate",
+  "Brief volunteers on day-of roles",
+  "Post-event: pack down & store supplies",
+];
+
+const checkState = {};
+EVENTS.forEach((e, ei) => {
+  checkState[ei] = CHECKLIST_TASKS.map(() => false);
+});
+
+function renderChecklist() {
+  const container = document.getElementById("checklistContainer");
+  if (!container) return;
+  const upcoming = EVENTS.map((e,i) => ({...e,idx:i})).filter(e => daysUntil(e.date) >= 0).sort((a,b) => a.date - b.date);
+
+  container.innerHTML = upcoming.slice(0, 8).map(e => {
+    const done = checkState[e.idx].filter(Boolean).length;
+    const pct = Math.round(done / CHECKLIST_TASKS.length * 100);
+    const sd = fmtDate(supplyDeadline(e));
+    const uc = urgencyClass(supplyDeadline(e));
+    return `<div class="checklist-card">
+      <div class="cl-header">
+        <div>
+          <div class="cl-event">${e.name}</div>
+          <div class="cl-date">${fmtDate(e.date)} · <span class="deadline-badge ${uc}" style="padding:1px 6px;font-size:10px">Order supplies by ${sd}</span></div>
+        </div>
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);">${done}/${CHECKLIST_TASKS.length}</div>
+      </div>
+      <div class="cl-items">
+        ${CHECKLIST_TASKS.map((t,ti) => `
+          <label class="cl-item${checkState[e.idx][ti]?' done':''}">
+            <input type="checkbox" ${checkState[e.idx][ti]?'checked':''} onchange="toggleCheck(${e.idx},${ti},this.checked)">
+            <span>${t}</span>
+          </label>
+        `).join('')}
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCheck(ei, ti, val) {
+  checkState[ei][ti] = val;
+  renderChecklist();
+}
+
+function renderVolunteer() {
+  const container = document.getElementById("volunteerContainer");
+  if (!container) return;
+  const upcoming = EVENTS.map((e,i)=>({...e,idx:i})).filter(e=>daysUntil(e.date)>=0).sort((a,b)=>a.date-b.date);
+
+  container.innerHTML = upcoming.slice(0,6).map(e => {
+    const rd = recruitDeadline(e);
+    const uc = urgencyClass(rd);
+    const daysLeft = daysUntil(rd);
+    const msg = `Hi team! 🙌\n\nWe're looking for volunteers to help build and decorate for our upcoming event:\n\n📅 ${e.name} — ${fmtDate(e.date)}\n\nWe need helpers for setup, decorating, and day-of support. If you're available and excited to serve, please reply to this message by ${fmtDate(rd)}.\n\nThank you for your heart to serve — we couldn't do this without you! 💛\n\nBlessings,\n[Your Name]`;
+
+    return `<div class="checklist-card">
+      <div class="cl-header">
+        <div>
+          <div class="cl-event">${e.name}</div>
+          <div class="cl-date">${fmtDate(e.date)}</div>
+        </div>
+        <span class="deadline-badge ${uc}" style="font-size:11px;">Recruit by ${fmtDate(rd)}${daysLeft >= 0 ? ' ('+daysLeft+'d)' : ' (past)'}</span>
+      </div>
+      <textarea style="width:100%;font-size:12px;font-family:'DM Sans',sans-serif;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;background:var(--color-background-secondary);color:var(--color-text-primary);resize:vertical;min-height:130px;" id="vmsg-${e.idx}">${msg}</textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="copyMsg(${e.idx})" style="font-size:12px;padding:5px 12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);">
+          <i class="ti ti-copy" aria-hidden="true"></i> Copy
+        </button>
+        <button onclick="sendPrompt('Draft a more detailed volunteer recruitment message for the event: ${e.name.replace(/'/g,"\\'")} on ${fmtDate(e.date)}')" style="font-size:12px;padding:5px 12px;font-family:'DM Sans',sans-serif;cursor:pointer;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);">
+          Customize ↗
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function copyMsg(idx) {
+  const ta = document.getElementById("vmsg-"+idx);
+  if (ta) {
+    navigator.clipboard.writeText(ta.value).catch(()=>{
+      ta.select(); document.execCommand('copy');
+    });
+  }
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  ['timeline','checklist','volunteer'].forEach(n => {
+    const el = document.getElementById('tab-'+n);
+    if (el) el.style.display = n === name ? '' : 'none';
+  });
+  event.target.classList.add('active');
+  if (name === 'checklist') renderChecklist();
+  if (name === 'volunteer') renderVolunteer();
+}
+
+renderSummary();
+renderTable();
+</script>
