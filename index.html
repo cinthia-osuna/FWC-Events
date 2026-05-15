@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>FWC Events 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+:root {
+  --teal-dark:#0a2e2a; --teal-mid:#0e3832;
+  --teal-border:rgba(255,255,255,0.12);
+  --cream:#f5f2eb;
+  --cream-dim:rgba(245,242,235,0.65);
+  --cream-dimmer:rgba(245,242,235,0.38);
+  --bg-panel:#ffffff; --bg-panel-2:#f4f2ee; --bg-panel-3:#eceae5;
+  --text-panel:#1a1a18; --text-panel-2:#6b6a65; --text-panel-3:#a09f9a;
+  --border-panel:rgba(0,0,0,0.08); --border-med:rgba(0,0,0,0.15);
+  --radius-sm:6px; --radius-md:10px; --radius-lg:14px; --radius-xl:20px;
+  --green-fill:#EAF3DE; --green-text:#3B6D11; --green-accent:#639922;
+  --amber-fill:#FAEEDA; --amber-text:#854F0B;
+  --red-fill:#FCEBEB; --red-text:#A32D2D;
+  --blue-fill:#E6F1FB; --blue-text:#185FA5;
+  --purple-fill:#EEEDFE; --purple-text:#534AB7;
+  --pink-fill:#FBEAF0; --pink-text:#993556;
+  --teal-fill:#E1F5EE; --teal-text:#0F6E56;
+  --coral-fill:#FAECE7; --coral-text:#993C1D;
+  --gray-fill:#F1EFE8; --gray-text:#5F5E5A;
+  --nav-h:72px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:'DM Sans',sans-serif;background:var(--teal-dark);color:var(--cream);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+
+.header{background:var(--teal-mid);border-bottom:1px solid var(--teal-border);padding:max(env(safe-area-inset-top),16px) 16px 16px;position:sticky;top:0;z-index:50;}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+h1.title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--cream);line-height:1.1;}
+.subtitle{font-size:12px;color:var(--cream-dim);font-weight:300;margin-top:2px;}
+.header-actions{display:flex;gap:8px;flex-shrink:0;margin-top:2px;}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.09);color:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;-webkit-tap-highlight-color:transparent;}
+.icon-btn:active{background:rgba(255,255,255,0.20);}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.stat-card{background:rgba(255,255,255,0.08);border:1px solid var(--teal-border);border-radius:var(--radius-md);padding:10px;text-align:center;}
+.stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--cream);line-height:1;}
+.stat-label{font-size:9px;color:var(--cream-dimmer);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-top:3px;}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));background:var(--teal-mid);border-top:1px solid var(--teal-border);display:flex;align-items:flex-start;padding-top:8px;z-index:100;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;-webkit-tap-highlight-color:transparent;}
+.nav-item i{font-size:22px;color:var(--cream-dimmer);transition:color 0.15s;}
+.nav-item span{font-size:10px;font-weight:500;color:var(--cream-dimmer);transition:color 0.15s;}
+.nav-item.active i,.nav-item.active span{color:var(--cream);}
+.nav-item.active i{background:rgba(255,255,255,0.13);border-radius:20px;padding:4px 16px;}
+
+.scroll-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 16px);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+.search-bar{display:flex;gap:8px;margin-bottom:12px;}
+.search-wrap{flex:1;position:relative;}
+.search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-panel-3);pointer-events:none;}
+.search-input{width:100%;height:40px;padding:0 12px 0 34px;border-radius:var(--radius-md);border:1px solid var(--border-med);background:var(--bg-panel);color:var(--text-panel);font-size:15px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;}
+.filter-btn{height:40px;padding:0 14px;border-radius:var(--radius-md);border:1px solid var(--border-med);background:var(--bg-panel);color:var(--text-panel-2);font-size:13px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+
+.filter-chips{display:flex;gap:7px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.filter-chips::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;height:30px;padding:0 12px;border-radius:20px;border:1px solid var(--border-med);background:var(--bg-panel);color:var(--text-panel-2);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
+.chip.active{background:var(--teal-dark);color:var(--cream);border-color:var(--teal-dark);}
+.chip-x{font-size:15px;line-height:1;opacity:0.7;}
+
+.event-card{background:var(--bg-panel);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden;border:1px solid var(--border-panel);}
+.countdown-bar{font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;padding:6px 14px;text-align:center;}
+.countdown-today{background:#0a2e2a;color:#9FE1CB;}
+.countdown-soon{background:#A32D2D;color:#FCEBEB;}
+.countdown-near{background:#FAEEDA;color:#854F0B;}
+.countdown-far{background:#f4f2ee;color:#6b6a65;}
+.countdown-past{background:#f4f2ee;color:#a09f9a;}
+.event-card-header{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 14px 10px;gap:10px;}
+.event-card-left{flex:1;min-width:0;}
+.event-card-name{font-size:15px;font-weight:600;color:var(--text-panel);line-height:1.3;margin-bottom:4px;}
+.event-card-date{font-size:12px;color:var(--text-panel-2);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.event-card-right{flex-shrink:0;padding-top:2px;}
+.event-card-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px;}
+.event-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.event-row-label{font-size:12px;color:var(--text-panel-2);display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.event-row-label i{font-size:14px;}
+.divider{height:1px;background:var(--border-panel);margin:2px 0;}
+
+.deadline-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:4px 9px;border-radius:20px;white-space:nowrap;}
+.db-green{background:var(--green-fill);color:var(--green-text);}
+.db-amber{background:var(--amber-fill);color:var(--amber-text);}
+.db-red{background:var(--red-fill);color:var(--red-text);}
+.db-gray{background:var(--gray-fill);color:var(--gray-text);}
+
+.cat-pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.cat-christmas{background:var(--red-fill);color:var(--red-text);}
+.cat-holiday{background:var(--blue-fill);color:var(--blue-text);}
+.cat-conference{background:var(--purple-fill);color:var(--purple-text);}
+.cat-youth{background:var(--green-fill);color:var(--green-text);}
+.cat-memorial{background:var(--gray-fill);color:var(--gray-text);}
+.cat-special{background:var(--amber-fill);color:var(--amber-text);}
+.cat-womens{background:var(--pink-fill);color:var(--pink-text);}
+.cat-mens{background:var(--teal-fill);color:var(--teal-text);}
+.cat-community{background:var(--coral-fill);color:var(--coral-text);}
+.cat-worship{background:var(--purple-fill);color:var(--purple-text);}
+
+.status-sel{font-size:13px;font-family:'DM Sans',sans-serif;border:1px solid var(--border-med);border-radius:var(--radius-sm);padding:5px 8px;background:var(--bg-panel-2);color:var(--text-panel);outline:none;-webkit-appearance:none;cursor:pointer;max-width:160px;}
+.notes-input{width:100%;font-size:13px;font-family:'DM Sans',sans-serif;border:1px solid var(--border-panel);border-radius:var(--radius-sm);padding:7px 10px;background:var(--bg-panel-2);color:var(--text-panel);resize:none;min-height:38px;outline:none;margin-top:2px;}
+.notes-input:focus{border-color:var(--border-med);}
+
+.section-intro{font-size:13px;color:var(--cream-dim);margin-bottom:12px;line-height:1.5;}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--cream-dim);font-size:14px;}
+
+.cl-card{background:var(--bg-panel);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden;border:1px solid var(--border-panel);}
+.cl-card-header{padding:14px;border-bottom:1px solid var(--border-panel);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.cl-name{font-size:15px;font-weight:600;color:var(--text-panel);margin-bottom:4px;}
+.cl-meta{font-size:12px;color:var(--text-panel-2);display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.cl-count{font-size:12px;font-weight:600;color:var(--text-panel-2);white-space:nowrap;}
+.progress-wrap{height:3px;background:var(--bg-panel-3);}
+.progress-fill{height:3px;background:var(--green-accent);transition:width 0.3s;}
+.cl-tasks{padding:4px 0;}
+.cl-task{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border-panel);cursor:pointer;-webkit-tap-highlight-color:transparent;min-height:48px;}
+.cl-task:last-child{border-bottom:none;}
+.cl-task:active{background:var(--bg-panel-2);}
+.cl-task input[type=checkbox]{width:20px;height:20px;flex-shrink:0;accent-color:#0f6e56;cursor:pointer;}
+.cl-task-text{font-size:14px;color:var(--text-panel);line-height:1.4;}
+.cl-task.done .cl-task-text{text-decoration:line-through;color:var(--text-panel-3);}
+
+.vol-card{background:var(--bg-panel);border-radius:var(--radius-lg);margin-bottom:10px;border:1px solid var(--border-panel);overflow:hidden;}
+.vol-header{padding:14px;border-bottom:1px solid var(--border-panel);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.vol-name{font-size:15px;font-weight:600;color:var(--text-panel);margin-bottom:3px;}
+.vol-date{font-size:12px;color:var(--text-panel-2);}
+.vmsg-area{width:100%;font-size:13px;font-family:'DM Sans',sans-serif;border:none;border-bottom:1px solid var(--border-panel);padding:12px 14px;background:var(--bg-panel-2);color:var(--text-panel);resize:none;min-height:160px;line-height:1.6;outline:none;display:block;}
+.vol-actions{display:flex;}
+.vol-btn{flex:1;height:48px;border:none;background:transparent;color:var(--teal-dark);font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;-webkit-tap-highlight-color:transparent;border-right:1px solid var(--border-panel);}
+.vol-btn:last-child{border-right:none;}
+.vol-btn:active{background:var(--bg-panel-2);}
+.vol-btn i{font-size:16px;}
+
+.save-sheet{background:rgba(255,255,255,0.07);border:1px solid var(--teal-border);border-radius:var(--radius-lg);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:12px;color:var(--cream-dim);}
+.save-sheet i{font-size:16px;flex-shrink:0;}
+.save-sheet-btns{display:flex;gap:8px;margin-left:auto;flex-shrink:0;}
+.teal-btn{height:32px;padding:0 12px;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.10);color:var(--cream);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:5px;-webkit-tap-highlight-color:transparent;}
+.teal-btn:active{background:rgba(255,255,255,0.20);}
+
+.toast{position:fixed;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 12px);left:50%;transform:translateX(-50%) translateY(10px);background:var(--text-panel);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:500;white-space:nowrap;opacity:0;transition:all 0.25s;pointer-events:none;z-index:200;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:150;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:var(--bg-panel);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:12px 20px max(env(safe-area-inset-bottom),20px);}
+.modal-handle{width:36px;height:4px;background:var(--border-med);border-radius:4px;margin:0 auto 16px;}
+.modal-title{font-size:16px;font-weight:600;color:var(--text-panel);margin-bottom:16px;}
+.modal-label{font-size:12px;font-weight:500;color:var(--text-panel-2);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;}
+.modal-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.modal-chip{height:34px;padding:0 14px;border-radius:20px;border:1px solid var(--border-med);background:var(--bg-panel-2);color:var(--text-panel);font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.modal-chip.active{background:var(--teal-dark);color:var(--cream);border-color:var(--teal-dark);}
+.modal-done{width:100%;height:48px;border-radius:var(--radius-lg);border:none;background:var(--teal-dark);color:var(--cream);font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:4px;}
+
+@media(min-width:700px){
+  .bottom-nav{display:none;}
+  .scroll-body{padding-bottom:2rem;}
+  .header{padding:24px 32px 20px;}
+  .scroll-body{padding:24px 32px 48px;}
+  .top-tabs{display:flex;gap:12px;margin-top:16px;}
+  .top-tab{padding:10px 22px;border-radius:50px;border:2px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.07);color:var(--cream-dim);font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.18s;}
+  .top-tab i{font-size:16px;}
+  .top-tab:hover{background:rgba(255,255,255,0.14);color:var(--cream);border-color:rgba(255,255,255,0.45);}
+  .top-tab.active{background:var(--cream);border-color:var(--cream);color:var(--teal-dark);font-weight:600;}
+  h1.title{font-size:30px;}
+}
+@media(max-width:699px){.top-tabs{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1 class="title">FWC Events 2026</h1>
+      <div class="subtitle">Coordinator Dashboard</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="exportBtn" title="Export"><i class="ti ti-download"></i></button>
+      <label class="icon-btn" title="Import" style="cursor:pointer">
+        <i class="ti ti-upload"></i>
+        <input type="file" accept=".json" id="importInput" style="display:none">
+      </label>
+    </div>
+  </div>
+  <div class="stats-row" id="summaryGrid"></div>
+  <div class="top-tabs">
+    <button class="top-tab active" id="dtab-timeline"><i class="ti ti-calendar-event"></i> Timeline &amp; Supplies</button>
+    <button class="top-tab" id="dtab-checklist"><i class="ti ti-checklist"></i> Prep Checklist</button>
+    <button class="top-tab" id="dtab-volunteer"><i class="ti ti-speakerphone"></i> Volunteer Comms</button>
+  </div>
+</div>
+
+<div class="scroll-body" id="scrollBody">
+  <div class="tab-panel active" id="tab-timeline">
+    <div class="search-bar">
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input class="search-input" type="search" id="searchBox" placeholder="Search events…">
+      </div>
+      <button class="filter-btn" id="filterOpenBtn"><i class="ti ti-adjustments-horizontal"></i> Filter</button>
+    </div>
+    <div class="filter-chips" id="activeChips"></div>
+    <div id="eventCards"></div>
+  </div>
+
+  <div class="tab-panel" id="tab-checklist">
+    <p class="section-intro">8-step prep checklist per event. Tap to check off — progress saves automatically.</p>
+    <div id="checklistContainer"></div>
+  </div>
+
+  <div class="tab-panel" id="tab-volunteer">
+    <p class="section-intro">Ready-to-send recruitment messages. Edit, then copy or open in email.</p>
+    <div id="volunteerContainer"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-timeline"><i class="ti ti-calendar-event"></i><span>Timeline</span></div>
+  <div class="nav-item" id="nav-checklist"><i class="ti ti-checklist"></i><span>Checklist</span></div>
+  <div class="nav-item" id="nav-volunteer"><i class="ti ti-speakerphone"></i><span>Recruit</span></div>
+</nav>
+
+<div class="modal-overlay" id="filterModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Filter Events</div>
+    <div class="modal-label">Month</div>
+    <div class="modal-chips" id="monthChips"></div>
+    <div class="modal-label">Urgency</div>
+    <div class="modal-chips" id="urgencyChips"></div>
+    <div class="modal-label">Status</div>
+    <div class="modal-chips" id="statusChips"></div>
+    <button class="modal-done" id="filterDoneBtn">Apply Filters</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var SUPPLY_LEAD = 21;
+var RECRUIT_LEAD = 14;
+
+var EVENTS = [
+  { name:"Father's Day",                        date:new Date(2026,5,21),  cat:"holiday" },
+  { name:"Independence Day",                    date:new Date(2026,6,5),   cat:"holiday" },
+  { name:"YA Collab",                           date:new Date(2026,6,10),  cat:"youth" },
+  { name:"High School Lake Day",                date:new Date(2026,6,11),  cat:"youth" },
+  { name:"Remembering Bishop Tafoya",           date:new Date(2026,6,19),  cat:"memorial" },
+  { name:"Back to School",                      date:new Date(2026,6,26),  cat:"community" },
+  { name:"FWC Birthday + Honoring Lead Pastors",date:new Date(2026,7,2),   cat:"special" },
+  { name:"Couples Connection",                  date:new Date(2026,7,8),   cat:"special" },
+  { name:"Just One Conference",                 date:new Date(2026,7,21),  cat:"conference" },
+  { name:"Grandparents Day",                    date:new Date(2026,8,13),  cat:"community" },
+  { name:"Man Up Conference",                   date:new Date(2026,8,19),  cat:"mens" },
+  { name:"Ordination Day",                      date:new Date(2026,9,11),  cat:"worship" },
+  { name:"Relentless Basketball Tournament",    date:new Date(2026,9,17),  cat:"youth" },
+  { name:"Hallelujah Festival",                 date:new Date(2026,9,22),  cat:"community" },
+  { name:"FWC Conference",                      date:new Date(2026,9,30),  cat:"conference" },
+  { name:"Ladies Friendsgiving",                date:new Date(2026,10,10), cat:"womens" },
+  { name:"Mens Lets Get Stuffed",               date:new Date(2026,10,12), cat:"mens" },
+  { name:"Christmas Decorating",                date:new Date(2026,10,28), cat:"christmas" },
+  { name:"Ladies Jingle and Mingle",            date:new Date(2026,11,8),  cat:"womens" },
+  { name:"FWC Kids Christmas Party",            date:new Date(2026,11,16), cat:"christmas" },
+  { name:"Christmas Program",                   date:new Date(2026,11,20), cat:"christmas" },
+  { name:"Christmas Candlelight",               date:new Date(2026,11,24), cat:"worship" },
+  { name:"NYE Service",                         date:new Date(2026,11,31), cat:"worship" }
+];
+
+var CAT_LABELS = {
+  christmas:"Christmas", holiday:"Holiday", conference:"Conference",
+  youth:"Youth", memorial:"Memorial", special:"Special",
+  womens:"Women's", mens:"Men's", community:"Community", worship:"Worship"
+};
+
+var CHECKLIST_TASKS = [
+  "Confirm event date and location",
+  "Create supply list",
+  "Order / purchase supplies",
+  "Send volunteer recruitment message",
+  "Confirm volunteer headcount",
+  "Set up and decorate",
+  "Brief volunteers on day-of roles",
+  "Post-event: pack down and store supplies"
+];
+
+var MONTHS = ["All","June","July","August","September","October","November","December"];
+
+var statuses = {}, notes = {}, checks = {};
+for (var i = 0; i < EVENTS.length; i++) {
+  statuses[i] = "Not started";
+  notes[i] = "";
+  checks[i] = CHECKLIST_TASKS.map(function(){ return false; });
+}
+loadLocal();
+
+var fMonth = "", fUrgency = "", fStatus = "";
+
+function daysUntil(d) { return Math.round((d - new Date()) / 86400000); }
+function supplyDL(ev) { return new Date(ev.date.getTime() - SUPPLY_LEAD * 86400000); }
+function recruitDL(ev){ return new Date(ev.date.getTime() - RECRUIT_LEAD * 86400000); }
+
+function urgClass(dl) {
+  var d = daysUntil(dl);
+  if (d < 0)  return "db-gray";
+  if (d < 14) return "db-red";
+  if (d < 30) return "db-amber";
+  return "db-green";
+}
+
+function urgLabel(dl) {
+  var d = daysUntil(dl);
+  if (d < 0)  return "Past";
+  if (d < 14) return d + "d urgent";
+  if (d < 30) return d + "d order now";
+  return d + " days";
+}
+
+function fmtDate(d) {
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function fmtMonth(d) {
+  return d.toLocaleString("en-US", { month: "long" });
+}
+
+/* ── Filter chips builder ── */
+function buildFilterChips() {
+  var mc = document.getElementById("monthChips");
+  mc.innerHTML = "";
+  MONTHS.forEach(function(m) {
+    var btn = document.createElement("button");
+    btn.className = "modal-chip" + ((m === "All" && fMonth === "") || fMonth === m ? " active" : "");
+    btn.textContent = m;
+    btn.setAttribute("data-month", m === "All" ? "" : m);
+    mc.appendChild(btn);
+  });
+
+  var uc = document.getElementById("urgencyChips");
+  uc.innerHTML = "";
+  [["", "All"], ["urgent", "Urgent <14d"], ["soon", "Order now 14-30d"], ["ok", "Comfortable 30d+"]].forEach(function(pair) {
+    var btn = document.createElement("button");
+    btn.className = "modal-chip" + (fUrgency === pair[0] ? " active" : "");
+    btn.textContent = pair[1];
+    btn.setAttribute("data-urg", pair[0]);
+    uc.appendChild(btn);
+  });
+
+  var sc = document.getElementById("statusChips");
+  sc.innerHTML = "";
+  ["", "Not started", "In progress", "Ordered", "Done"].forEach(function(s) {
+    var btn = document.createElement("button");
+    btn.className = "modal-chip" + (fStatus === s ? " active" : "");
+    btn.textContent = s === "" ? "All" : s;
+    btn.setAttribute("data-st", s);
+    sc.appendChild(btn);
+  });
+}
+
+document.getElementById("monthChips").addEventListener("click", function(e) {
+  var btn = e.target.closest(".modal-chip");
+  if (!btn) return;
+  fMonth = btn.getAttribute("data-month");
+  buildFilterChips();
+});
+
+document.getElementById("urgencyChips").addEventListener("click", function(e) {
+  var btn = e.target.closest(".modal-chip");
+  if (!btn) return;
+  fUrgency = btn.getAttribute("data-urg");
+  buildFilterChips();
+});
+
+document.getElementById("statusChips").addEventListener("click", function(e) {
+  var btn = e.target.closest(".modal-chip");
+  if (!btn) return;
+  fStatus = btn.getAttribute("data-st");
+  buildFilterChips();
+});
+
+document.getElementById("filterOpenBtn").addEventListener("click", function() {
+  buildFilterChips();
+  document.getElementById("filterModal").classList.add("open");
+});
+
+document.getElementById("filterDoneBtn").addEventListener("click", function() {
+  document.getElementById("filterModal").classList.remove("open");
+  renderCards();
+  updateChips();
+});
+
+document.getElementById("filterModal").addEventListener("click", function(e) {
+  if (e.target === this) {
+    this.classList.remove("open");
+    renderCards();
+    updateChips();
+  }
+});
+
+function updateChips() {
+  var wrap = document.getElementById("activeChips");
+  wrap.innerHTML = "";
+  if (fMonth) {
+    var c = makeChip(fMonth, function(){ fMonth = ""; renderCards(); updateChips(); });
+    wrap.appendChild(c);
+  }
+  if (fUrgency) {
+    var label = fUrgency === "urgent" ? "Urgent <14d" : fUrgency === "soon" ? "Order now" : "Comfortable";
+    var c2 = makeChip(label, function(){ fUrgency = ""; renderCards(); updateChips(); });
+    wrap.appendChild(c2);
+  }
+  if (fStatus) {
+    var c3 = makeChip(fStatus, function(){ fStatus = ""; renderCards(); updateChips(); });
+    wrap.appendChild(c3);
+  }
+}
+
+function makeChip(label, onRemove) {
+  var d = document.createElement("div");
+  d.className = "chip active";
+  d.textContent = label + " ";
+  var x = document.createElement("span");
+  x.className = "chip-x";
+  x.textContent = "×";
+  x.addEventListener("click", onRemove);
+  d.appendChild(x);
+  return d;
+}
+
+document.getElementById("searchBox").addEventListener("input", function() { renderCards(); });
+
+/* ── Data helpers ── */
+function filteredEvents() {
+  var q = document.getElementById("searchBox").value.toLowerCase();
+  return EVENTS.map(function(e, i){ return Object.assign({}, e, { idx: i }); }).filter(function(e) {
+    if (q && e.name.toLowerCase().indexOf(q) === -1) return false;
+    if (fMonth && fmtMonth(e.date) !== fMonth) return false;
+    if (fUrgency) {
+      var d = daysUntil(supplyDL(e));
+      if (fUrgency === "urgent" && !(d >= 0 && d < 14)) return false;
+      if (fUrgency === "soon"   && !(d >= 14 && d < 30)) return false;
+      if (fUrgency === "ok"     && d < 30) return false;
+    }
+    if (fStatus && statuses[e.idx] !== fStatus) return false;
+    return true;
+  });
+}
+
+/* ── Render: Event Cards ── */
+function renderCards() {
+  var wrap = document.getElementById("eventCards");
+  if (!wrap) return;
+  var evs = filteredEvents().sort(function(a, b){ return a.date - b.date; });
+
+  if (!evs.length) {
+    wrap.innerHTML = "<div class=\"empty-state\">No events match your filters.</div>";
+    renderSummary();
+    return;
+  }
+
+  wrap.innerHTML = "";
+  evs.forEach(function(e) {
+    var sd = supplyDL(e), rd = recruitDL(e);
+    var past = daysUntil(e.date) < 0;
+    var stat = statuses[e.idx];
+
+    var card = document.createElement("div");
+    card.className = "event-card";
+
+    var eventDays = daysUntil(e.date);
+    var countdownBar;
+    if (past) {
+      countdownBar = "<div class=\"countdown-bar countdown-past\">Event has passed</div>";
+    } else if (eventDays === 0) {
+      countdownBar = "<div class=\"countdown-bar countdown-today\">Today!</div>";
+    } else if (eventDays === 1) {
+      countdownBar = "<div class=\"countdown-bar countdown-soon\">Tomorrow!</div>";
+    } else if (eventDays <= 7) {
+      countdownBar = "<div class=\"countdown-bar countdown-soon\">" + eventDays + " days away</div>";
+    } else if (eventDays <= 30) {
+      countdownBar = "<div class=\"countdown-bar countdown-near\">" + eventDays + " days away</div>";
+    } else {
+      countdownBar = "<div class=\"countdown-bar countdown-far\">" + eventDays + " days away</div>";
+    }
+
+    var header = countdownBar +
+    "<div class=\"event-card-header\">" +
+      "<div class=\"event-card-left\">" +
+        "<div class=\"event-card-name\"" + (past ? " style=\"opacity:0.5\"" : "") + ">" + e.name + "</div>" +
+        "<div class=\"event-card-date\">" +
+          "<i class=\"ti ti-calendar\" style=\"font-size:12px\"></i>" + fmtDate(e.date) +
+          " <span class=\"cat-pill cat-" + e.cat + "\">" + CAT_LABELS[e.cat] + "</span>" +
+        "</div>" +
+      "</div>" +
+      "<div class=\"event-card-right\">" +
+        (past ? "<span class=\"deadline-badge db-gray\">Past</span>" :
+          "<span class=\"deadline-badge " + urgClass(sd) + "\">" + urgLabel(sd) + "</span>") +
+      "</div>" +
+    "</div>";
+
+    var recruitRow = !past ?
+      "<div class=\"event-row\">" +
+        "<div class=\"event-row-label\"><i class=\"ti ti-users\"></i>Recruit by</div>" +
+        "<span class=\"deadline-badge " + urgClass(rd) + "\" style=\"font-size:11px\">" + fmtDate(rd) + "</span>" +
+      "</div><div class=\"divider\"></div>" : "";
+
+    var statusOpts = ["Not started","In progress","Ordered","Done"].map(function(s) {
+      return "<option" + (s === stat ? " selected" : "") + ">" + s + "</option>";
+    }).join("");
+
+    var body = "<div class=\"event-card-body\">" +
+      recruitRow +
+      "<div class=\"event-row\">" +
+        "<div class=\"event-row-label\"><i class=\"ti ti-check\"></i>Status</div>" +
+        "<select class=\"status-sel\" data-idx=\"" + e.idx + "\">" + statusOpts + "</select>" +
+      "</div>" +
+      "<textarea class=\"notes-input\" placeholder=\"Add notes\u2026\" data-idx=\"" + e.idx + "\">" + (notes[e.idx] || "") + "</textarea>" +
+    "</div>";
+
+    card.innerHTML = header + body;
+    wrap.appendChild(card);
+  });
+
+  /* attach events after DOM insertion */
+  wrap.querySelectorAll(".status-sel").forEach(function(sel) {
+    sel.addEventListener("change", function() {
+      updateStatus(parseInt(this.getAttribute("data-idx")), this.value);
+    });
+  });
+  wrap.querySelectorAll(".notes-input").forEach(function(ta) {
+    ta.addEventListener("change", function() {
+      updateNote(parseInt(this.getAttribute("data-idx")), this.value);
+    });
+  });
+
+  renderSummary();
+}
+
+function updateStatus(idx, val) {
+  statuses[idx] = val;
+  saveLocal();
+  renderSummary();
+  if (document.getElementById("tab-checklist").classList.contains("active")) renderChecklist();
+}
+
+function updateNote(idx, val) {
+  notes[idx] = val;
+  saveLocal();
+}
+
+/* ── Render: Summary ── */
+function renderSummary() {
+  var grid = document.getElementById("summaryGrid");
+  if (!grid) return;
+  var upcoming = EVENTS.filter(function(e){ return daysUntil(e.date) >= 0; });
+  var urgent = EVENTS.filter(function(e){
+    return daysUntil(e.date) >= 0 && daysUntil(supplyDL(e)) < 14 && daysUntil(supplyDL(e)) >= 0;
+  });
+  var done = Object.values(statuses).filter(function(s){ return s === "Done"; }).length;
+  var sorted = upcoming.slice().sort(function(a, b){ return a.date - b.date; });
+  var nextEv = sorted[0];
+  var nd = nextEv ? daysUntil(nextEv.date) : "—";
+
+  grid.innerHTML =
+    "<div class=\"stat-card\"><div class=\"stat-val\">" + EVENTS.length + "</div><div class=\"stat-label\">Events</div></div>" +
+    "<div class=\"stat-card\"><div class=\"stat-val\">" + nd + "</div><div class=\"stat-label\">Days away</div></div>" +
+    "<div class=\"stat-card\"><div class=\"stat-val\"" + (urgent.length > 0 ? " style=\"color:#f09595\"" : "") + ">" + urgent.length + "</div><div class=\"stat-label\">Urgent</div></div>" +
+    "<div class=\"stat-card\"><div class=\"stat-val\" style=\"color:#9FE1CB\">" + done + "</div><div class=\"stat-label\">Done</div></div>";
+}
+
+/* ── Render: Checklist ── */
+function renderChecklist() {
+  var container = document.getElementById("checklistContainer");
+  if (!container) return;
+  var upcoming = EVENTS.map(function(e, i){ return Object.assign({}, e, { idx: i }); })
+    .filter(function(e){ return daysUntil(e.date) >= 0; })
+    .sort(function(a, b){ return a.date - b.date; });
+
+  container.innerHTML = "";
+  upcoming.forEach(function(e) {
+    var done = checks[e.idx].filter(Boolean).length;
+    var pct = Math.round(done / CHECKLIST_TASKS.length * 100);
+    var sd = supplyDL(e);
+
+    var card = document.createElement("div");
+    card.className = "cl-card";
+
+    var tasksHtml = CHECKLIST_TASKS.map(function(t, ti) {
+      return "<label class=\"cl-task" + (checks[e.idx][ti] ? " done" : "") + "\" data-ei=\"" + e.idx + "\" data-ti=\"" + ti + "\">" +
+        "<input type=\"checkbox\"" + (checks[e.idx][ti] ? " checked" : "") + ">" +
+        "<span class=\"cl-task-text\">" + t + "</span>" +
+      "</label>";
+    }).join("");
+
+    card.innerHTML =
+      "<div class=\"cl-card-header\">" +
+        "<div><div class=\"cl-name\">" + e.name + "</div>" +
+          "<div class=\"cl-meta\">" + fmtDate(e.date) +
+            " <span class=\"deadline-badge " + urgClass(sd) + "\" style=\"font-size:10px;padding:2px 7px\">Order by " + fmtDate(sd) + "</span>" +
+          "</div>" +
+        "</div>" +
+        "<div class=\"cl-count\">" + done + "/" + CHECKLIST_TASKS.length + "</div>" +
+      "</div>" +
+      "<div class=\"progress-wrap\"><div class=\"progress-fill\" style=\"width:" + pct + "%\"></div></div>" +
+      "<div class=\"cl-tasks\">" + tasksHtml + "</div>";
+
+    card.querySelectorAll(".cl-task").forEach(function(label) {
+      label.addEventListener("click", function() {
+        var ei = parseInt(this.getAttribute("data-ei"));
+        var ti = parseInt(this.getAttribute("data-ti"));
+        checks[ei][ti] = !checks[ei][ti];
+        saveLocal();
+        renderChecklist();
+      });
+    });
+
+    container.appendChild(card);
+  });
+}
+
+/* ── Render: Volunteer ── */
+function renderVolunteer() {
+  var container = document.getElementById("volunteerContainer");
+  if (!container) return;
+  var upcoming = EVENTS.map(function(e, i){ return Object.assign({}, e, { idx: i }); })
+    .filter(function(e){ return daysUntil(e.date) >= 0; })
+    .sort(function(a, b){ return a.date - b.date; });
+
+  container.innerHTML = "";
+  upcoming.forEach(function(e) {
+    var rd = recruitDL(e);
+    var dLeft = daysUntil(rd);
+    var msg = "Hi FWC family! \uD83D\uDE4C\n\nWe need volunteers to help build and decorate for:\n\n\uD83D\uDCC5 " + e.name + " \u2014 " + fmtDate(e.date) + "\n\nWe're looking for helpers for setup, decorating, and day-of support. If you have a heart to serve and can join us, please reply by " + fmtDate(rd) + ".\n\nThank you so much \u2014 we couldn't do this without you! \uD83D\uDCB5\n\nBlessings,\n[Your Name]";
+
+    var card = document.createElement("div");
+    card.className = "vol-card";
+
+    card.innerHTML =
+      "<div class=\"vol-header\">" +
+        "<div><div class=\"vol-name\">" + e.name + "</div><div class=\"vol-date\">" + fmtDate(e.date) + "</div></div>" +
+        "<span class=\"deadline-badge " + urgClass(rd) + "\" style=\"font-size:11px;flex-shrink:0\">Recruit by " + fmtDate(rd) + (dLeft >= 0 ? " (" + dLeft + "d)" : "") + "</span>" +
+      "</div>" +
+      "<textarea class=\"vmsg-area\" id=\"vmsg-" + e.idx + "\">" + msg + "</textarea>" +
+      "<div class=\"vol-actions\">" +
+        "<button class=\"vol-btn\" data-copy=\"" + e.idx + "\"><i class=\"ti ti-copy\"></i> Copy</button>" +
+        "<button class=\"vol-btn\" data-mail=\"" + e.idx + "\"><i class=\"ti ti-mail\"></i> Email</button>" +
+      "</div>";
+
+    card.querySelector("[data-copy]").addEventListener("click", function() {
+      var idx = parseInt(this.getAttribute("data-copy"));
+      var ta = document.getElementById("vmsg-" + idx);
+      if (!ta) return;
+      navigator.clipboard.writeText(ta.value)
+        .then(function(){ showToast("Copied!"); })
+        .catch(function(){ ta.select(); document.execCommand("copy"); showToast("Copied!"); });
+    });
+
+    card.querySelector("[data-mail]").addEventListener("click", function() {
+      var idx = parseInt(this.getAttribute("data-mail"));
+      var ta = document.getElementById("vmsg-" + idx);
+      var subject = encodeURIComponent("Volunteers needed \u2014 " + EVENTS[idx].name);
+      var body = ta ? encodeURIComponent(ta.value) : "";
+      window.open("mailto:?subject=" + subject + "&body=" + body);
+    });
+
+    container.appendChild(card);
+  });
+}
+
+/* ── Tab switching ── */
+function switchTab(name) {
+  ["timeline", "checklist", "volunteer"].forEach(function(n) {
+    var p  = document.getElementById("tab-" + n);
+    var nb = document.getElementById("nav-" + n);
+    var db = document.getElementById("dtab-" + n);
+    if (p)  p.classList.toggle("active", n === name);
+    if (nb) nb.classList.toggle("active", n === name);
+    if (db) db.classList.toggle("active", n === name);
+  });
+  if (name === "checklist") renderChecklist();
+  if (name === "volunteer") renderVolunteer();
+  document.getElementById("scrollBody").scrollTop = 0;
+}
+
+["timeline","checklist","volunteer"].forEach(function(n) {
+  var nb = document.getElementById("nav-" + n);
+  var db = document.getElementById("dtab-" + n);
+  if (nb) nb.addEventListener("click", function(){ switchTab(n); });
+  if (db) db.addEventListener("click", function(){ switchTab(n); });
+});
+
+/* ── Toast ── */
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2000);
+}
+
+/* ── Persistence ── */
+function saveLocal() {
+  try {
+    localStorage.setItem("fwc26_s", JSON.stringify(statuses));
+    localStorage.setItem("fwc26_n", JSON.stringify(notes));
+    localStorage.setItem("fwc26_c", JSON.stringify(checks));
+  } catch(e) {}
+}
+
+function loadLocal() {
+  try {
+    var s = localStorage.getItem("fwc26_s");
+    var n = localStorage.getItem("fwc26_n");
+    var c = localStorage.getItem("fwc26_c");
+    if (s) statuses = JSON.parse(s);
+    if (n) notes    = JSON.parse(n);
+    if (c) checks   = JSON.parse(c);
+  } catch(e) {}
+}
+
+document.getElementById("exportBtn").addEventListener("click", function() {
+  var data = { statuses: statuses, notes: notes, checks: checks, exportedAt: new Date().toISOString() };
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "FWC_Events_" + new Date().toISOString().slice(0, 10) + ".json";
+  a.click();
+  showToast("Exported!");
+});
+
+document.getElementById("importInput").addEventListener("change", function(evt) {
+  var file = evt.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      if (data.statuses) statuses = data.statuses;
+      if (data.notes)    notes    = data.notes;
+      if (data.checks)   checks   = data.checks;
+      saveLocal();
+      renderCards();
+      renderSummary();
+      showToast("Imported!");
+    } catch(err) { showToast("Import failed."); }
+  };
+  reader.readAsText(file);
+});
+
+/* ── Init ── */
+renderSummary();
+renderCards();
+</script>
+</body>
+</html>
